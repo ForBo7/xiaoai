@@ -5,4 +5,5 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://ForBo7.github.io',
                 'git_url': 'https://github.com/ForBo7/xiaoai',
                 'lib_path': 'xiaoai'},
-  'syms': {'xiaoai.core': {'xiaoai.core.foo': ('core.html#foo', 'xiaoai/core.py')}}}
+  'syms': { 'xiaoai.core': { 'xiaoai.core.collate_dict': ('core.html#collate_dict', 'xiaoai/core.py'),
+                             'xiaoai.core.inplace': ('core.html#inplace', 'xiaoai/core.py')}}}
