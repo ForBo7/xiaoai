@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "xiaoai"
+  site-url: "https://ForBo7.github.io/xiaoai"
+  description: "A tiny AI framework."
+  repo-branch: main
+  repo-url: "https://github.com/ForBo7/xiaoai"
