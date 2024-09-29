@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Fill in a module description here">
+
+<title>core – xiaoai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="core – xiaoai">
+<meta property="og:description" content="Fill in a module description here">
+<meta property="og:site_name" content="xiaoai">
+<meta name="twitter:title" content="core – xiaoai">
+<meta name="twitter:description" content="Fill in a module description here">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">xiaoai</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./core.html">core</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">xiaoai</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./core.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">core</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#hugging-face-datasets" id="toc-hugging-face-datasets" class="nav-link active" data-scroll-target="#hugging-face-datasets">Hugging Face Datasets</a>
+  <ul class="collapse">
+  <li><a href="#inplace" id="toc-inplace" class="nav-link" data-scroll-target="#inplace">inplace</a></li>
+  <li><a href="#itemgetters" id="toc-itemgetters" class="nav-link" data-scroll-target="#itemgetters">Itemgetters</a></li>
+  <li><a href="#collation" id="toc-collation" class="nav-link" data-scroll-target="#collation">Collation</a></li>
+  <li><a href="#collate_dict" id="toc-collate_dict" class="nav-link" data-scroll-target="#collate_dict">collate_dict</a></li>
+  </ul></li>
+  <li><a href="#plotting-images" id="toc-plotting-images" class="nav-link" data-scroll-target="#plotting-images">Plotting Images</a>
+  <ul class="collapse">
+  <li><a href="#show_image" id="toc-show_image" class="nav-link" data-scroll-target="#show_image">show_image</a></li>
+  <li><a href="#subplots" id="toc-subplots" class="nav-link" data-scroll-target="#subplots">subplots</a></li>
+  <li><a href="#get_grid" id="toc-get_grid" class="nav-link" data-scroll-target="#get_grid">get_grid</a></li>
+  <li><a href="#show_images" id="toc-show_images" class="nav-link" data-scroll-target="#show_images">show_images</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ForBo7/xiaoai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="core.html.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">core</h1>
+</div>
+
+<div>
+  <div class="description">
+    Fill in a module description here
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<hr>
+<section id="hugging-face-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="hugging-face-datasets">Hugging Face Datasets</h2>
+<div id="cell-4" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-5" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>logging.disable(logging.WARNING)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset_builder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">'fashion_mnist'</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ds_builder <span class="op">=</span> load_dataset_builder(name)<span class="op">;</span> <span class="bu">print</span>(ds_builder.info.description)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-8" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">dir</span>(ds_builder.info)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>['_INCLUDED_INFO_IN_YAML',
+ '__annotations__',
+ '__class__',
+ '__dataclass_fields__',
+ '__dataclass_params__',
+ '__delattr__',
+ '__dict__',
+ '__dir__',
+ '__doc__',
+ '__eq__',
+ '__format__',
+ '__ge__',
+ '__getattribute__',
+ '__getstate__',
+ '__gt__',
+ '__hash__',
+ '__init__',
+ '__init_subclass__',
+ '__le__',
+ '__lt__',
+ '__match_args__',
+ '__module__',
+ '__ne__',
+ '__new__',
+ '__post_init__',
+ '__reduce__',
+ '__reduce_ex__',
+ '__repr__',
+ '__setattr__',
+ '__sizeof__',
+ '__str__',
+ '__subclasshook__',
+ '__weakref__',
+ '_dump_info',
+ '_dump_license',
+ '_from_yaml_dict',
+ '_to_yaml_dict',
+ 'builder_name',
+ 'citation',
+ 'config_name',
+ 'copy',
+ 'dataset_name',
+ 'dataset_size',
+ 'description',
+ 'download_checksums',
+ 'download_size',
+ 'features',
+ 'from_dict',
+ 'from_directory',
+ 'from_merge',
+ 'homepage',
+ 'license',
+ 'post_processed',
+ 'post_processing_size',
+ 'size_in_bytes',
+ 'splits',
+ 'supervised_keys',
+ 'task_templates',
+ 'update',
+ 'version',
+ 'write_to_directory']</code></pre>
+</div>
+</div>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ds_builder.info.splits</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'train': SplitInfo(name='train', num_bytes=31304707, num_examples=60000, shard_lengths=None, dataset_name='fashion_mnist'),
+ 'test': SplitInfo(name='test', num_bytes=5235160, num_examples=10000, shard_lengths=None, dataset_name='fashion_mnist')}</code></pre>
+</div>
+</div>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ds_builder.info.features</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': Image(mode=None, decode=True, id=None),
+ 'label': ClassLabel(names=['T - shirt / top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'], id=None)}</code></pre>
+</div>
+</div>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>DatasetDict({
+    train: Dataset({
+        features: ['image', 'label'],
+        num_rows: 60000
+    })
+    test: Dataset({
+        features: ['image', 'label'],
+        num_rows: 10000
+    })
+})</code></pre>
+</div>
+</div>
+<div id="cell-12" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dsd <span class="op">=</span> load_dataset(name)<span class="op">;</span> dsd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-13" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>trn,tst<span class="op">=</span> dsd[<span class="st">'train'</span>],dsd[<span class="st">'test'</span>]<span class="op">;</span> trn[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': &lt;PIL.PngImagePlugin.PngImageFile image mode=L size=28x28&gt;,
+ 'label': 9}</code></pre>
+</div>
+</div>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x,y <span class="op">=</span> ds_builder.info.features<span class="op">;</span> x,y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>('image', 'label')</code></pre>
+</div>
+</div>
+<div id="cell-15" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>trn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Dataset({
+    features: ['image', 'label'],
+    num_rows: 60000
+})</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> trn[<span class="dv">0</span>][x]<span class="op">;</span> img</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_core_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-17" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>xb,yb <span class="op">=</span> trn[:<span class="dv">5</span>][x],trn[:<span class="dv">5</span>][y]<span class="op">;</span> yb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>[9, 0, 0, 3, 0]</code></pre>
+</div>
+</div>
+<div id="cell-18" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>trn.features</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': Image(mode=None, decode=True, id=None),
+ 'label': ClassLabel(names=['T - shirt / top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'], id=None)}</code></pre>
+</div>
+</div>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>featy <span class="op">=</span> trn.features[y]<span class="op">;</span> featy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>ClassLabel(names=['T - shirt / top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'], id=None)</code></pre>
+</div>
+</div>
+<div id="cell-20" class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>?featy.int2str</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature: featy.int2str(values: Union[int, collections.abc.Iterable]) -&gt; Union[str, collections.abc.Iterable]
+Docstring:
+Conversion `integer` =&gt; class name `string`.
+
+Regarding unknown/missing labels: passing negative integers raises `ValueError`.
+
+Example:
+
+```py
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset("rotten_tomatoes", split="train")
+&gt;&gt;&gt; ds.features["label"].int2str(0)
+'neg'
+```
+File:      ~/miniforge3/envs/default/lib/python3.11/site-packages/datasets/features/features.py
+Type:      method</code></pre>
+</div>
+</div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>featy.int2str(yb), yb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(['Ankle boot',
+  'T - shirt / top',
+  'T - shirt / top',
+  'Dress',
+  'T - shirt / top'],
+ [9, 0, 0, 3, 0])</code></pre>
+</div>
+</div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.transforms.functional <span class="im">as</span> TF</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>torch.Size([1, 28, 28])</code></pre>
+</div>
+</div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>TF.to_tensor(img).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-24" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>[TF.to_tensor(o) <span class="cf">for</span> o <span class="kw">in</span> xb]<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>torch.stack([TF.to_tensor(o) <span class="cf">for</span> o <span class="kw">in</span> xb]).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-26" class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collate_fn(b):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {x: torch. stack([TF.to_tensor(o[x]) <span class="cf">for</span> o <span class="kw">in</span> b]),</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>          y: torch.tensor([o[y]               <span class="cf">for</span> o <span class="kw">in</span> b])}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Init signature:
+DataLoader(
+    dataset: torch.utils.data.dataset.Dataset[+T_co],
+    batch_size: Optional[int] = 1,
+    shuffle: Optional[bool] = None,
+    sampler: Union[torch.utils.data.sampler.Sampler, Iterable, NoneType] = None,
+    batch_sampler: Union[torch.utils.data.sampler.Sampler[List], Iterable[List], NoneType] = None,
+    num_workers: int = 0,
+    collate_fn: Optional[Callable[[List[~T]], Any]] = None,
+    pin_memory: bool = False,
+    drop_last: bool = False,
+    timeout: float = 0,
+    worker_init_fn: Optional[Callable[[int], NoneType]] = None,
+    multiprocessing_context=None,
+    generator=None,
+    *,
+    prefetch_factor: Optional[int] = None,
+    persistent_workers: bool = False,
+    pin_memory_device: str = '',
+)
+Docstring:     
+Data loader combines a dataset and a sampler, and provides an iterable over the given dataset.
+
+The :class:`~torch.utils.data.DataLoader` supports both map-style and
+iterable-style datasets with single- or multi-process loading, customizing
+loading order and optional automatic batching (collation) and memory pinning.
+
+See :py:mod:`torch.utils.data` documentation page for more details.
+
+Args:
+    dataset (Dataset): dataset from which to load the data.
+    batch_size (int, optional): how many samples per batch to load
+        (default: ``1``).
+    shuffle (bool, optional): set to ``True`` to have the data reshuffled
+        at every epoch (default: ``False``).
+    sampler (Sampler or Iterable, optional): defines the strategy to draw
+        samples from the dataset. Can be any ``Iterable`` with ``__len__``
+        implemented. If specified, :attr:`shuffle` must not be specified.
+    batch_sampler (Sampler or Iterable, optional): like :attr:`sampler`, but
+        returns a batch of indices at a time. Mutually exclusive with
+        :attr:`batch_size`, :attr:`shuffle`, :attr:`sampler`,
+        and :attr:`drop_last`.
+    num_workers (int, optional): how many subprocesses to use for data
+        loading. ``0`` means that the data will be loaded in the main process.
+        (default: ``0``)
+    collate_fn (Callable, optional): merges a list of samples to form a
+        mini-batch of Tensor(s).  Used when using batched loading from a
+        map-style dataset.
+    pin_memory (bool, optional): If ``True``, the data loader will copy Tensors
+        into device/CUDA pinned memory before returning them.  If your data elements
+        are a custom type, or your :attr:`collate_fn` returns a batch that is a custom type,
+        see the example below.
+    drop_last (bool, optional): set to ``True`` to drop the last incomplete batch,
+        if the dataset size is not divisible by the batch size. If ``False`` and
+        the size of dataset is not divisible by the batch size, then the last batch
+        will be smaller. (default: ``False``)
+    timeout (numeric, optional): if positive, the timeout value for collecting a batch
+        from workers. Should always be non-negative. (default: ``0``)
+    worker_init_fn (Callable, optional): If not ``None``, this will be called on each
+        worker subprocess with the worker id (an int in ``[0, num_workers - 1]``) as
+        input, after seeding and before data loading. (default: ``None``)
+    multiprocessing_context (str or multiprocessing.context.BaseContext, optional): If
+        ``None``, the default `multiprocessing context`_ of your operating system will
+        be used. (default: ``None``)
+    generator (torch.Generator, optional): If not ``None``, this RNG will be used
+        by RandomSampler to generate random indexes and multiprocessing to generate
+        ``base_seed`` for workers. (default: ``None``)
+    prefetch_factor (int, optional, keyword-only arg): Number of batches loaded
+        in advance by each worker. ``2`` means there will be a total of
+        2 * num_workers batches prefetched across all workers. (default value depends
+        on the set value for num_workers. If value of num_workers=0 default is ``None``.
+        Otherwise, if value of ``num_workers &gt; 0`` default is ``2``).
+    persistent_workers (bool, optional): If ``True``, the data loader will not shut down
+        the worker processes after a dataset has been consumed once. This allows to
+        maintain the workers `Dataset` instances alive. (default: ``False``)
+    pin_memory_device (str, optional): the device to :attr:`pin_memory` to if ``pin_memory`` is
+        ``True``.
+
+
+.. warning:: If the ``spawn`` start method is used, :attr:`worker_init_fn`
+             cannot be an unpicklable object, e.g., a lambda function. See
+             :ref:`multiprocessing-best-practices` on more details related
+             to multiprocessing in PyTorch.
+
+.. warning:: ``len(dataloader)`` heuristic is based on the length of the sampler used.
+             When :attr:`dataset` is an :class:`~torch.utils.data.IterableDataset`,
+             it instead returns an estimate based on ``len(dataset) / batch_size``, with proper
+             rounding depending on :attr:`drop_last`, regardless of multi-process loading
+             configurations. This represents the best guess PyTorch can make because PyTorch
+             trusts user :attr:`dataset` code in correctly handling multi-process
+             loading to avoid duplicate data.
+
+             However, if sharding results in multiple workers having incomplete last batches,
+             this estimate can still be inaccurate, because (1) an otherwise complete batch can
+             be broken into multiple ones and (2) more than one batch worth of samples can be
+             dropped when :attr:`drop_last` is set. Unfortunately, PyTorch can not detect such
+             cases in general.
+
+             See `Dataset Types`_ for more details on these two types of datasets and how
+             :class:`~torch.utils.data.IterableDataset` interacts with
+             `Multi-process data loading`_.
+
+.. warning:: See :ref:`reproducibility`, and :ref:`dataloader-workers-random-seed`, and
+             :ref:`data-loading-randomness` notes for random seed related questions.
+
+.. _multiprocessing context:
+    https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods
+File:           ~/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/dataloader.py
+Type:           type
+Subclasses:     </code></pre>
+</div>
+</div>
+<div id="cell-28" class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>?DataLoader</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dl <span class="op">=</span> DataLoader(trn, collate_fn<span class="op">=</span>collate_fn, batch_size<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(dl))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>b[x].shape, b[y]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([16, 1, 28, 28]),
+ tensor([9, 0, 0, 3, 0, 2, 7, 2, 5, 5, 0, 9, 5, 5, 7, 9]))</code></pre>
+</div>
+</div>
+<p>Instead of ahving to convert all images to tensors when the dataloader is created, we can do so when only an individual batch is created.</p>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transforms(b):</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  b[x] <span class="op">=</span> [TF.to_tensor(o) <span class="cf">for</span> o <span class="kw">in</span> b[x]]</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this case, a collation function wil not be needed. This is because either PyTorch know show to handle HF’s <code>with_transform</code> method, or PyTorch will supply its own [appropriate] collate function.</p>
+<div id="cell-33" class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>tdsd <span class="op">=</span> trn.with_transform(transforms)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>dl <span class="op">=</span> DataLoader(tdsd, batch_size<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(dl))</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>b[x].shape, b[y]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([16, 1, 28, 28]),
+ tensor([9, 0, 0, 3, 0, 2, 7, 2, 5, 5, 0, 9, 5, 5, 7, 9]))</code></pre>
+</div>
+</div>
+<p>To prevent having to include a return statement in our <code>transforms</code> funciton, we can create an additional function to handle this for us.</p>
+<div id="cell-35" class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>TF.to_tensor(img).shape, torch.flatten(TF.to_tensor(img)).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([1, 28, 28]), torch.Size([784]))</code></pre>
+</div>
+</div>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _transformi(b): b[x] <span class="op">=</span> [torch.flatten(TF.to_tensor(o)) <span class="cf">for</span> o <span class="kw">in</span> b[x]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/ForBo7/xiaoai/blob/main/xiaoai/core.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="inplace" class="level3">
+<h3 class="anchored" data-anchor-id="inplace">inplace</h3>
+<blockquote class="blockquote">
+<pre><code> inplace (f)</code></pre>
+</blockquote>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>transformi <span class="op">=</span> inplace(_transformi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-39" class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> trn.with_transform(transformi)[<span class="dv">0</span>]</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>r[x].shape, r[y]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([784]), 9)</code></pre>
+</div>
+</div>
+<p>In fact, this is simply what a decorator is.</p>
+<div id="cell-41" class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="at">@inplace</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transformi(b): b[x] <span class="op">=</span> [torch.flatten(TF.to_tensor(o)) <span class="cf">for</span> o <span class="kw">in</span> b[x]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-42" class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>tdsd <span class="op">=</span> trn.with_transform(transformi)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> tdsd[<span class="dv">0</span>]</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>r[x].shape, r[y]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([784]), 9)</code></pre>
+</div>
+</div>
+</section>
+<section id="itemgetters" class="level3">
+<h3 class="anchored" data-anchor-id="itemgetters">Itemgetters</h3>
+<div id="cell-44" class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> operator</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call signature: operator(obj, /, *args, **kwargs)
+Type:           module
+String form:    &lt;module 'operator' from '/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/operator.py'&gt;
+File:           ~/miniforge3/envs/default/lib/python3.11/operator.py
+Docstring:     
+Operator interface.
+
+This module exports a set of functions implemented in C corresponding
+to the intrinsic operators of Python.  For example, operator.add(x, y)
+is equivalent to the expression x+y.  The function names are those
+used for special methods; variants without leading and trailing
+'__' are also provided for convenience.
+Call docstring: Same as obj(*args, **kwargs).</code></pre>
+</div>
+</div>
+<div id="cell-45" class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>?operator</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-46" class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>?operator</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-47" class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>?itemgetter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-48" class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="bu">dict</span>(a<span class="op">=</span><span class="dv">1</span>,b<span class="op">=</span><span class="dv">2</span>,c<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>ig <span class="op">=</span> itemgetter(<span class="st">'a'</span>,<span class="st">'c'</span>)<span class="op">;</span> ig(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(1, 3)</code></pre>
+</div>
+</div>
+<div id="cell-49" class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> D:</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>,k): <span class="cf">return</span> <span class="dv">1</span> <span class="cf">if</span> k<span class="op">==</span><span class="st">'a'</span> <span class="cf">else</span> <span class="dv">2</span> <span class="cf">if</span> k<span class="op">==</span><span class="st">'b'</span> <span class="cf">else</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-50" class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> D()<span class="op">;</span> d[<span class="st">'a'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>1</code></pre>
+</div>
+</div>
+<div id="cell-51" class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>ig(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(1, 3)</code></pre>
+</div>
+</div>
+</section>
+<section id="collation" class="level3">
+<h3 class="anchored" data-anchor-id="collation">Collation</h3>
+<div id="cell-53" class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> default_collate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature: default_collate(batch)
+Docstring:
+Take in a batch of data and put the elements within the batch into a tensor with an additional outer dimension - batch size.
+
+The exact output type can be a :class:`torch.Tensor`, a `Sequence` of :class:`torch.Tensor`, a
+Collection of :class:`torch.Tensor`, or left unchanged, depending on the input type.
+This is used as the default function for collation when
+`batch_size` or `batch_sampler` is defined in :class:`~torch.utils.data.DataLoader`.
+
+Here is the general input type (based on the type of the element within the batch) to output type mapping:
+
+    * :class:`torch.Tensor` -&gt; :class:`torch.Tensor` (with an added outer dimension batch size)
+    * NumPy Arrays -&gt; :class:`torch.Tensor`
+    * `float` -&gt; :class:`torch.Tensor`
+    * `int` -&gt; :class:`torch.Tensor`
+    * `str` -&gt; `str` (unchanged)
+    * `bytes` -&gt; `bytes` (unchanged)
+    * `Mapping[K, V_i]` -&gt; `Mapping[K, default_collate([V_1, V_2, ...])]`
+    * `NamedTuple[V1_i, V2_i, ...]` -&gt; `NamedTuple[default_collate([V1_1, V1_2, ...]),
+      default_collate([V2_1, V2_2, ...]), ...]`
+    * `Sequence[V1_i, V2_i, ...]` -&gt; `Sequence[default_collate([V1_1, V1_2, ...]),
+      default_collate([V2_1, V2_2, ...]), ...]`
+
+Args:
+    batch: a single batch to be collated
+
+Examples:
+    &gt;&gt;&gt; # xdoctest: +SKIP
+    &gt;&gt;&gt; # Example with a batch of `int`s:
+    &gt;&gt;&gt; default_collate([0, 1, 2, 3])
+    tensor([0, 1, 2, 3])
+    &gt;&gt;&gt; # Example with a batch of `str`s:
+    &gt;&gt;&gt; default_collate(['a', 'b', 'c'])
+    ['a', 'b', 'c']
+    &gt;&gt;&gt; # Example with `Map` inside the batch:
+    &gt;&gt;&gt; default_collate([{'A': 0, 'B': 1}, {'A': 100, 'B': 100}])
+    {'A': tensor([  0, 100]), 'B': tensor([  1, 100])}
+    &gt;&gt;&gt; # Example with `NamedTuple` inside the batch:
+    &gt;&gt;&gt; Point = namedtuple('Point', ['x', 'y'])
+    &gt;&gt;&gt; default_collate([Point(0, 0), Point(1, 1)])
+    Point(x=tensor([0, 1]), y=tensor([0, 1]))
+    &gt;&gt;&gt; # Example with `Tuple` inside the batch:
+    &gt;&gt;&gt; default_collate([(0, 1), (2, 3)])
+    [tensor([0, 2]), tensor([1, 3])]
+    &gt;&gt;&gt; # Example with `List` inside the batch:
+    &gt;&gt;&gt; default_collate([[0, 1], [2, 3]])
+    [tensor([0, 2]), tensor([1, 3])]
+    &gt;&gt;&gt; # Two options to extend `default_collate` to handle specific type
+    &gt;&gt;&gt; # Option 1: Write custom collate function and invoke `default_collate`
+    &gt;&gt;&gt; def custom_collate(batch):
+    ...     elem = batch[0]
+    ...     if isinstance(elem, CustomType):  # Some custom condition
+    ...         return ...
+    ...     else:  # Fall back to `default_collate`
+    ...         return default_collate(batch)
+    &gt;&gt;&gt; # Option 2: In-place modify `default_collate_fn_map`
+    &gt;&gt;&gt; def collate_customtype_fn(batch, *, collate_fn_map=None):
+    ...     return ...
+    &gt;&gt;&gt; default_collate_fn_map.update(CustomType, collate_customtype_fn)
+    &gt;&gt;&gt; default_collate(batch)  # Handle `CustomType` automatically
+File:      ~/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py
+Type:      function</code></pre>
+</div>
+</div>
+<div id="cell-54" class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>?default_collate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-55" class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>batch <span class="op">=</span> <span class="bu">dict</span>(a<span class="op">=</span>[<span class="dv">1</span>],b<span class="op">=</span>[<span class="dv">2</span>]), <span class="bu">dict</span>(a<span class="op">=</span>[<span class="dv">3</span>],b<span class="op">=</span>[<span class="dv">4</span>])</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>default_collate(batch), <span class="bu">type</span>(batch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>({'a': [tensor([1, 3])], 'b': [tensor([2, 4])]}, tuple)</code></pre>
+</div>
+</div>
+<div id="cell-56" class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>ig <span class="op">=</span> itemgetter(<span class="op">*</span>trn.features)<span class="op">;</span> ig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>operator.itemgetter('image', 'label')</code></pre>
+</div>
+</div>
+<div id="cell-57" class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>default_collate([b])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': tensor([[[[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          ...,
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]]]]),
+ 'label': tensor([[9, 0, 0, 3, 0, 2, 7, 2, 5, 5, 0, 9, 5, 5, 7, 9]])}</code></pre>
+</div>
+</div>
+<div id="cell-58" class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>ig(default_collate([b]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(tensor([[[[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          ...,
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]]]]),
+ tensor([[9, 0, 0, 3, 0, 2, 7, 2, 5, 5, 0, 9, 5, 5, 7, 9]]))</code></pre>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/ForBo7/xiaoai/blob/main/xiaoai/core.py#L22" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="collate_dict" class="level3">
+<h3 class="anchored" data-anchor-id="collate_dict">collate_dict</h3>
+<blockquote class="blockquote">
+<pre><code> collate_dict (ds)</code></pre>
+</blockquote>
+<p>The function above collates a dictionary. it converts a dictionary into a tuple, containing the <em>xs</em> and <em>ys</em>. Handy when working with both Hugging Face and PyTorch.</p>
+<div id="cell-61" class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>dl <span class="op">=</span> DataLoader(tdsd, batch_size<span class="op">=</span><span class="dv">4</span>, collate_fn<span class="op">=</span>collate_dict(tdsd))</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>xb,yb <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(dl))</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>xb.shape, yb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([4, 784]), tensor([9, 0, 0, 3]))</code></pre>
+</div>
+</div>
+<div id="cell-62" class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>xb,yb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(tensor([[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]]),
+ tensor([9, 0, 0, 3]))</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="plotting-images" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-images">Plotting Images</h2>
+<div id="cell-64" class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(dl))<span class="op">;</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(tensor([[0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.],
+         [0., 0., 0.,  ..., 0., 0., 0.]]),
+ tensor([9, 0, 0, 3]))</code></pre>
+</div>
+</div>
+<div id="cell-65" class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>xb <span class="op">=</span> b[<span class="dv">0</span>]</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="co"># img = xb[0]; img.shape, img[0].shape</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-66" class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-67" class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>mpl.rcParams[<span class="st">'image.cmap'</span>] <span class="op">=</span> <span class="st">'gray'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-68" class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-69" class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> TF.to_tensor(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-70" class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>img.shape, img.permute(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([1, 28, 28]), torch.Size([28, 28, 1]))</code></pre>
+</div>
+</div>
+<div id="cell-71" class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>?fc.delegates</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-72" class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>?fc.hasattrs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature: fc.hasattrs(o, attrs)
+Docstring: Test whether `o` contains all `attrs`
+File:      ~/miniforge3/envs/default/lib/python3.11/site-packages/fastcore/basics.py
+Type:      function</code></pre>
+</div>
+</div>
+<pre><code>/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/fastcore/docscrape.py:230: UserWarning: Unknown section Other Parameters
+  else: warn(msg)
+/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/fastcore/docscrape.py:230: UserWarning: Unknown section See Also
+  else: warn(msg)</code></pre>
+<hr>
+<p><a href="https://github.com/ForBo7/xiaoai/blob/main/xiaoai/core.py#L36" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="show_image" class="level3">
+<h3 class="anchored" data-anchor-id="show_image">show_image</h3>
+<blockquote class="blockquote">
+<pre><code> show_image (im, ax=None, figsize=None, title=None, noframe=True,
+             cmap=None, norm=None, aspect=None, interpolation=None,
+             alpha=None, vmin=None, vmax=None, origin=None, extent=None,
+             interpolation_stage=None, filternorm=True, filterrad=4.0,
+             resample=None, url=None, data=None)</code></pre>
+</blockquote>
+<p><em>Show a PIL or PyTorch image on <code>ax</code>.</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>im</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>ax</td>
+<td>NoneType</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>NoneType</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>title</td>
+<td>NoneType</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>noframe</td>
+<td>bool</td>
+<td>True</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>cmap</td>
+<td>NoneType</td>
+<td>None</td>
+<td>The Colormap instance or registered colormap name used to map scalar data<br>to colors.<br><br>This parameter is ignored if <em>X</em> is RGB(A).</td>
+</tr>
+<tr class="odd">
+<td>norm</td>
+<td>NoneType</td>
+<td>None</td>
+<td>The normalization method used to scale scalar data to the [0, 1] range<br>before mapping to colors using <em>cmap</em>. By default, a linear scaling is<br>used, mapping the lowest value to 0 and the highest to 1.<br><br>If given, this can be one of the following:<br><br>- An instance of <code>.Normalize</code> or one of its subclasses<br> (see :ref:<code>colormapnorms</code>).<br>- A scale name, i.e.&nbsp;one of “linear”, “log”, “symlog”, “logit”, etc. For a<br> list of available scales, call <code>matplotlib.scale.get_scale_names()</code>.<br> In that case, a suitable <code>.Normalize</code> subclass is dynamically generated<br> and instantiated.<br><br>This parameter is ignored if <em>X</em> is RGB(A).</td>
+</tr>
+<tr class="even">
+<td>aspect</td>
+<td>NoneType</td>
+<td>None</td>
+<td>The aspect ratio of the Axes. This parameter is particularly<br>relevant for images since it determines whether data pixels are<br>square.<br><br>This parameter is a shortcut for explicitly calling<br><code>.Axes.set_aspect</code>. See there for further details.<br><br>- ‘equal’: Ensures an aspect ratio of 1. Pixels will be square<br> (unless pixel sizes are explicitly made non-square in data<br> coordinates using <em>extent</em>).<br>- ‘auto’: The Axes is kept fixed and the aspect is adjusted so<br> that the data fit in the Axes. In general, this will result in<br> non-square pixels.<br><br>Normally, None (the default) means to use :rc:<code>image.aspect</code>. However, if<br>the image uses a transform that does not contain the axes data transform,<br>then None means to not modify the axes aspect at all (in that case, directly<br>call <code>.Axes.set_aspect</code> if desired).</td>
+</tr>
+<tr class="odd">
+<td>interpolation</td>
+<td>NoneType</td>
+<td>None</td>
+<td>The interpolation method used.<br><br>Supported values are ‘none’, ‘antialiased’, ‘nearest’, ‘bilinear’,<br>‘bicubic’, ‘spline16’, ‘spline36’, ‘hanning’, ‘hamming’, ‘hermite’,<br>‘kaiser’, ‘quadric’, ‘catrom’, ‘gaussian’, ‘bessel’, ‘mitchell’,<br>‘sinc’, ‘lanczos’, ‘blackman’.<br><br>The data <em>X</em> is resampled to the pixel size of the image on the<br>figure canvas, using the interpolation method to either up- or<br>downsample the data.<br><br>If <em>interpolation</em> is ‘none’, then for the ps, pdf, and svg<br>backends no down- or upsampling occurs, and the image data is<br>passed to the backend as a native image. Note that different ps,<br>pdf, and svg viewers may display these raw pixels differently. On<br>other backends, ‘none’ is the same as ‘nearest’.<br><br>If <em>interpolation</em> is the default ‘antialiased’, then ‘nearest’<br>interpolation is used if the image is upsampled by more than a<br>factor of three (i.e.&nbsp;the number of display pixels is at least<br>three times the size of the data array). If the upsampling rate is<br>smaller than 3, or the image is downsampled, then ‘hanning’<br>interpolation is used to act as an anti-aliasing filter, unless the<br>image happens to be upsampled by exactly a factor of two or one.<br><br>See<br>:doc:<code>/gallery/images_contours_and_fields/interpolation_methods</code><br>for an overview of the supported interpolation methods, and<br>:doc:<code>/gallery/images_contours_and_fields/image_antialiasing</code> for<br>a discussion of image antialiasing.<br><br>Some interpolation methods require an additional radius parameter,<br>which can be set by <em>filterrad</em>. Additionally, the antigrain image<br>resize filter is controlled by the parameter <em>filternorm</em>.</td>
+</tr>
+<tr class="even">
+<td>alpha</td>
+<td>NoneType</td>
+<td>None</td>
+<td>The alpha blending value, between 0 (transparent) and 1 (opaque).<br>If <em>alpha</em> is an array, the alpha blending values are applied pixel<br>by pixel, and <em>alpha</em> must have the same shape as <em>X</em>.</td>
+</tr>
+<tr class="odd">
+<td>vmin</td>
+<td>NoneType</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>vmax</td>
+<td>NoneType</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>origin</td>
+<td>NoneType</td>
+<td>None</td>
+<td>Place the [0, 0] index of the array in the upper left or lower<br>left corner of the Axes. The convention (the default) ‘upper’ is<br>typically used for matrices and images.<br><br>Note that the vertical axis points upward for ‘lower’<br>but downward for ‘upper’.<br><br>See the :ref:<code>imshow_extent</code> tutorial for<br>examples and a more detailed description.</td>
+</tr>
+<tr class="even">
+<td>extent</td>
+<td>NoneType</td>
+<td>None</td>
+<td>The bounding box in data coordinates that the image will fill.<br>These values may be unitful and match the units of the Axes.<br>The image is stretched individually along x and y to fill the box.<br><br>The default extent is determined by the following conditions.<br>Pixels have unit size in data coordinates. Their centers are on<br>integer coordinates, and their center coordinates range from 0 to<br>columns-1 horizontally and from 0 to rows-1 vertically.<br><br>Note that the direction of the vertical axis and thus the default<br>values for top and bottom depend on <em>origin</em>:<br><br>- For <code>origin == 'upper'</code> the default is<br> <code>(-0.5, numcols-0.5, numrows-0.5, -0.5)</code>.<br>- For <code>origin == 'lower'</code> the default is<br> <code>(-0.5, numcols-0.5, -0.5, numrows-0.5)</code>.<br><br>See the :ref:<code>imshow_extent</code> tutorial for<br>examples and a more detailed description.</td>
+</tr>
+<tr class="odd">
+<td>interpolation_stage</td>
+<td>NoneType</td>
+<td>None</td>
+<td>If ‘data’, interpolation<br>is carried out on the data provided by the user. If ‘rgba’, the<br>interpolation is carried out after the colormapping has been<br>applied (visual interpolation).</td>
+</tr>
+<tr class="even">
+<td>filternorm</td>
+<td>bool</td>
+<td>True</td>
+<td>A parameter for the antigrain image resize filter (see the<br>antigrain documentation). If <em>filternorm</em> is set, the filter<br>normalizes integer values and corrects the rounding errors. It<br>doesn’t do anything with the source floating point values, it<br>corrects only integers according to the rule of 1.0 which means<br>that any sum of pixel weights must be equal to 1.0. So, the<br>filter function must produce a graph of the proper shape.</td>
+</tr>
+<tr class="odd">
+<td>filterrad</td>
+<td>float</td>
+<td>4.0</td>
+<td>The filter radius for filters that have a radius parameter, i.e.<br>when interpolation is one of: ‘sinc’, ‘lanczos’ or ‘blackman’.</td>
+</tr>
+<tr class="even">
+<td>resample</td>
+<td>NoneType</td>
+<td>None</td>
+<td>When <em>True</em>, use a full resampling method. When <em>False</em>, only<br>resample when the output image is larger than the input image.</td>
+</tr>
+<tr class="odd">
+<td>url</td>
+<td>NoneType</td>
+<td>None</td>
+<td>Set the url of the created <code>.AxesImage</code>. See <code>.Artist.set_url</code>.</td>
+</tr>
+<tr class="even">
+<td>data</td>
+<td>NoneType</td>
+<td>None</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-74" class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>img.permute(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>).shape, img.permute(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>)[...,<span class="dv">0</span>].shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([28, 28, 1]), torch.Size([28, 28]))</code></pre>
+</div>
+</div>
+<div id="cell-75" class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>show_image(img, figsize<span class="op">=</span>(<span class="dv">2</span>,<span class="dv">2</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_core_files/figure-html/cell-65-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-76" class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>?show_image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature:
+show_image(
+    im,
+    ax=None,
+    figsize=None,
+    title=None,
+    noframe=True,
+    *,
+    cmap=None,
+    norm=None,
+    aspect=None,
+    interpolation=None,
+    alpha=None,
+    vmin=None,
+    vmax=None,
+    origin=None,
+    extent=None,
+    interpolation_stage=None,
+    filternorm=True,
+    filterrad=4.0,
+    resample=None,
+    url=None,
+    data=None,
+)
+Docstring: Show a PIL or PyTorch image on `ax`.
+File:      /var/folders/fy/vg316qk1001227svr6d4d8l40000gn/T/ipykernel_13157/1415261445.py
+Type:      function</code></pre>
+</div>
+</div>
+<div id="cell-77" class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>fig,axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>show_image(img,axs[<span class="dv">0</span>])</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>show_image(trn[x][<span class="dv">1</span>], axs[<span class="dv">1</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_core_files/figure-html/cell-67-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/ForBo7/xiaoai/blob/main/xiaoai/core.py#L53" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="subplots" class="level3">
+<h3 class="anchored" data-anchor-id="subplots">subplots</h3>
+<blockquote class="blockquote">
+<pre><code> subplots (nrows:int=1, ncols:int=1, figsize:tuple=None, imsize:int=3,
+           suptitle:str=None,
+           sharex:"bool|Literal['none','all','row','col']"=False,
+           sharey:"bool|Literal['none','all','row','col']"=False,
+           squeeze:bool=True, width_ratios:Sequence[float]|None=None,
+           height_ratios:Sequence[float]|None=None,
+           subplot_kw:dict[str,Any]|None=None,
+           gridspec_kw:dict[str,Any]|None=None, **kwargs)</code></pre>
+</blockquote>
+<p><em>A figure and set of subplots to display images of <code>imsize</code> inches</em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nrows</td>
+<td>int</td>
+<td>1</td>
+<td>Number of rows in returned axes grid</td>
+</tr>
+<tr class="even">
+<td>ncols</td>
+<td>int</td>
+<td>1</td>
+<td>Number of cols in returned axes grid</td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>None</td>
+<td>w,h in inches of the returned figure</td>
+</tr>
+<tr class="even">
+<td>imsize</td>
+<td>int</td>
+<td>3</td>
+<td>Size (in inches) of images that will be displayed in the returned figure</td>
+</tr>
+<tr class="odd">
+<td>suptitle</td>
+<td>str</td>
+<td>None</td>
+<td>Title to be set in returned figure</td>
+</tr>
+<tr class="even">
+<td>sharex</td>
+<td>bool | Literal[‘none’, ‘all’, ‘row’, ‘col’]</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sharey</td>
+<td>bool | Literal[‘none’, ‘all’, ‘row’, ‘col’]</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>squeeze</td>
+<td>bool</td>
+<td>True</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>width_ratios</td>
+<td>Sequence[float] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>height_ratios</td>
+<td>Sequence[float] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>subplot_kw</td>
+<td>dict[str, Any] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>gridspec_kw</td>
+<td>dict[str, Any] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>kwargs</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-79" class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>fig,axs <span class="op">=</span> subplots(<span class="dv">3</span>,<span class="dv">3</span>, imsize<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>imgs <span class="op">=</span> trn[x][:<span class="dv">8</span>]</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax,img <span class="kw">in</span> <span class="bu">zip</span>(axs.flat, imgs): show_image(img, ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_core_files/figure-html/cell-69-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/ForBo7/xiaoai/blob/main/xiaoai/core.py#L71" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_grid" class="level3">
+<h3 class="anchored" data-anchor-id="get_grid">get_grid</h3>
+<blockquote class="blockquote">
+<pre><code> get_grid (n:int, nrows:int=None, ncols:int=None, title:str=None,
+           weight:str='bold', size:int=14, figsize:tuple=None,
+           imsize:int=3, suptitle:str=None,
+           sharex:"bool|Literal['none','all','row','col']"=False,
+           sharey:"bool|Literal['none','all','row','col']"=False,
+           squeeze:bool=True, width_ratios:Sequence[float]|None=None,
+           height_ratios:Sequence[float]|None=None,
+           subplot_kw:dict[str,Any]|None=None,
+           gridspec_kw:dict[str,Any]|None=None)</code></pre>
+</blockquote>
+<p><em>Return a grid of <code>n</code> axes, <code>rows</code> by <code>cols</code></em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n</td>
+<td>int</td>
+<td></td>
+<td>Number of axes</td>
+</tr>
+<tr class="even">
+<td>nrows</td>
+<td>int</td>
+<td>None</td>
+<td>Number of rows, defaulting to <code>int(math.sqrt(n))</code></td>
+</tr>
+<tr class="odd">
+<td>ncols</td>
+<td>int</td>
+<td>None</td>
+<td>Number of cols, defaulting to <code>ceil(n/rows)</code></td>
+</tr>
+<tr class="even">
+<td>title</td>
+<td>str</td>
+<td>None</td>
+<td>If passed, title set to the figure</td>
+</tr>
+<tr class="odd">
+<td>weight</td>
+<td>str</td>
+<td>bold</td>
+<td>Title font weight</td>
+</tr>
+<tr class="even">
+<td>size</td>
+<td>int</td>
+<td>14</td>
+<td>Title font size</td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>None</td>
+<td>w,h in inches of the returned figure</td>
+</tr>
+<tr class="even">
+<td>imsize</td>
+<td>int</td>
+<td>3</td>
+<td>Size (in inches) of images that will be displayed in the returned figure</td>
+</tr>
+<tr class="odd">
+<td>suptitle</td>
+<td>str</td>
+<td>None</td>
+<td>Title to be set in returned figure</td>
+</tr>
+<tr class="even">
+<td>sharex</td>
+<td>bool | Literal[‘none’, ‘all’, ‘row’, ‘col’]</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sharey</td>
+<td>bool | Literal[‘none’, ‘all’, ‘row’, ‘col’]</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>squeeze</td>
+<td>bool</td>
+<td>True</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>width_ratios</td>
+<td>Sequence[float] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>height_ratios</td>
+<td>Sequence[float] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>subplot_kw</td>
+<td>dict[str, Any] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>gridspec_kw</td>
+<td>dict[str, Any] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-81" class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>fig,axs <span class="op">=</span> get_grid(<span class="dv">8</span>, nrows<span class="op">=</span><span class="dv">3</span>, imsize<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax,img <span class="kw">in</span> <span class="bu">zip</span>(axs.flat,imgs): show_image(img, ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_core_files/figure-html/cell-71-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-82" class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>?zip_longest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/ForBo7/xiaoai/blob/main/xiaoai/core.py#L96" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="show_images" class="level3">
+<h3 class="anchored" data-anchor-id="show_images">show_images</h3>
+<blockquote class="blockquote">
+<pre><code> show_images (ims:list, nrows:int|None=None, ncols:int|None=None,
+              titles:list|None=None, figsize:tuple=None, imsize:int=3,
+              suptitle:str=None,
+              sharex:"bool|Literal['none','all','row','col']"=False,
+              sharey:"bool|Literal['none','all','row','col']"=False,
+              squeeze:bool=True, width_ratios:Sequence[float]|None=None,
+              height_ratios:Sequence[float]|None=None,
+              subplot_kw:dict[str,Any]|None=None,
+              gridspec_kw:dict[str,Any]|None=None)</code></pre>
+</blockquote>
+<p><em>Show all images <code>ims</code> as subplots with <code>rows</code> using <code>titles</code></em></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 25%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Default</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ims</td>
+<td>list</td>
+<td></td>
+<td>Images to show</td>
+</tr>
+<tr class="even">
+<td>nrows</td>
+<td>int | None</td>
+<td>None</td>
+<td>Number of rows in grid</td>
+</tr>
+<tr class="odd">
+<td>ncols</td>
+<td>int | None</td>
+<td>None</td>
+<td>Number of columsn in grid (auto-calculated if None)</td>
+</tr>
+<tr class="even">
+<td>titles</td>
+<td>list | None</td>
+<td>None</td>
+<td>Optional list of titles for each image</td>
+</tr>
+<tr class="odd">
+<td>figsize</td>
+<td>tuple</td>
+<td>None</td>
+<td>w,h in inches of the returned figure</td>
+</tr>
+<tr class="even">
+<td>imsize</td>
+<td>int</td>
+<td>3</td>
+<td>Size (in inches) of images that will be displayed in the returned figure</td>
+</tr>
+<tr class="odd">
+<td>suptitle</td>
+<td>str</td>
+<td>None</td>
+<td>Title to be set in returned figure</td>
+</tr>
+<tr class="even">
+<td>sharex</td>
+<td>bool | Literal[‘none’, ‘all’, ‘row’, ‘col’]</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sharey</td>
+<td>bool | Literal[‘none’, ‘all’, ‘row’, ‘col’]</td>
+<td>False</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>squeeze</td>
+<td>bool</td>
+<td>True</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>width_ratios</td>
+<td>Sequence[float] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>height_ratios</td>
+<td>Sequence[float] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>subplot_kw</td>
+<td>dict[str, Any] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>gridspec_kw</td>
+<td>dict[str, Any] | None</td>
+<td>None</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="cell-84" class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>yb <span class="op">=</span> trn[y][:<span class="dv">8</span>]</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>lbls <span class="op">=</span> trn[y][:<span class="dv">8</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-85" class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> <span class="st">'Top Trouser Pullover Dress Coat Sandal Shirt Sneaker Bag Boot'</span>.split()</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>titles <span class="op">=</span> itemgetter(<span class="op">*</span>lbls)(names)</span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a><span class="co">' '</span>.join(titles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'Boot Top Top Dress Top Pullover Sneaker Pullover'</code></pre>
+</div>
+</div>
+<div id="cell-86" class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>show_images(imgs, imsize<span class="op">=</span><span class="fl">1.7</span>, titles<span class="op">=</span>titles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="00_core_files/figure-html/cell-76-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/ForBo7\.github\.io\/xiaoai");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ForBo7/xiaoai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
