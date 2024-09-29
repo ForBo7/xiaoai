@@ -5,32 +5,32 @@
 # %% auto 0
 __all__ = ['inplace', 'collate_dict', 'show_image', 'subplots', 'get_grid', 'show_images']
 
-# %% ../nbs/00_core.ipynb 22
+# %% ../nbs/00_core.ipynb 26
 import torch
 
-# %% ../nbs/00_core.ipynb 34
+# %% ../nbs/00_core.ipynb 39
 def inplace(f):
   def _f(b):
     f(b)
     return b
   return _f
 
-# %% ../nbs/00_core.ipynb 43
+# %% ../nbs/00_core.ipynb 49
 from operator import itemgetter
 
-# %% ../nbs/00_core.ipynb 55
+# %% ../nbs/00_core.ipynb 62
 def collate_dict(ds):
   get = itemgetter(*ds.features)
   def _f(b): return get(default_collate(b))
   return _f
 
-# %% ../nbs/00_core.ipynb 63
+# %% ../nbs/00_core.ipynb 71
 import matplotlib.pyplot as plt
 
-# %% ../nbs/00_core.ipynb 67
+# %% ../nbs/00_core.ipynb 75
 import fastcore.all as fc
 
-# %% ../nbs/00_core.ipynb 70
+# %% ../nbs/00_core.ipynb 78
 import numpy as np
 @fc.delegates(plt.Axes.imshow)
 def show_image(im, ax=None, figsize=None, title=None, noframe=True, **kwargs):
@@ -48,7 +48,7 @@ def show_image(im, ax=None, figsize=None, title=None, noframe=True, **kwargs):
   if noframe: ax.axis('off')
   return ax
 
-# %% ../nbs/00_core.ipynb 75
+# %% ../nbs/00_core.ipynb 83
 @fc.delegates(plt.subplots, keep=True)
 def subplots(
   nrows:int=1, # Number of rows in returned axes grid
@@ -65,7 +65,7 @@ def subplots(
   if nrows*ncols==1: ax = np.array([ax])
   return fig,ax
 
-# %% ../nbs/00_core.ipynb 78
+# %% ../nbs/00_core.ipynb 86
 import math
 @fc.delegates(subplots)
 def get_grid(
@@ -88,10 +88,10 @@ def get_grid(
   if title is not None: fig.suptitle(title, weight=weight, size=size)
   return fig,axs
 
-# %% ../nbs/00_core.ipynb 80
+# %% ../nbs/00_core.ipynb 88
 from itertools import zip_longest
 
-# %% ../nbs/00_core.ipynb 82
+# %% ../nbs/00_core.ipynb 90
 @fc.delegates(subplots)
 def show_images(ims:list, # Images to show
                 nrows:int|None=None, # Number of rows in grid
