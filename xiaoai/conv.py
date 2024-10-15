@@ -9,7 +9,7 @@ def conv(ni, nf, ks=3, stride=2, act=True):
   if act: res = nn.Sequential(res, nn.ReLU())
   return res
 
-# %% ../nbs/07_convolutions.ipynb 268
+# %% ../nbs/07_convolutions.ipynb 269
 from typing import Mapping
 from torch.utils.data import default_collate
 
