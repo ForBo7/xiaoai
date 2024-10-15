@@ -3,22 +3,22 @@
 # %% auto 0
 __all__ = ['accuracy', 'report', 'Dataset', 'fit', 'get_dls']
 
-# %% ../nbs/04_minibatch_training.ipynb 69
+# %% ../nbs/04_minibatch_training.ipynb 74
 def accuracy(preds, yb): return ((preds.argmax(-1) == yb).sum()) / yb.shape[0]
 
-# %% ../nbs/04_minibatch_training.ipynb 72
+# %% ../nbs/04_minibatch_training.ipynb 77
 def report(loss, preds, yb): print(f'{loss:.2f}, {accuracy(preds, yb):.2f}')
 
-# %% ../nbs/04_minibatch_training.ipynb 128
+# %% ../nbs/04_minibatch_training.ipynb 135
 class Dataset():
   def __init__(self, x, y): self.x, self.y = x, y
   def __len__(self): return len(self.x)
   def __getitem__(self, i): return self.x[i], self.y[i]
 
-# %% ../nbs/04_minibatch_training.ipynb 179
+# %% ../nbs/04_minibatch_training.ipynb 191
 from torch.utils.data import DataLoader, SequentialSampler, RandomSampler, BatchSampler
 
-# %% ../nbs/04_minibatch_training.ipynb 199
+# %% ../nbs/04_minibatch_training.ipynb 211
 def fit(epoch, model, loss_func, opt, trn_dl, vld_dl):
   for epoch in range(epochs):
     model.train()
@@ -43,7 +43,7 @@ def fit(epoch, model, loss_func, opt, trn_dl, vld_dl):
   return tot_loss/count, tot_acc/count
 
 
-# %% ../nbs/04_minibatch_training.ipynb 200
+# %% ../nbs/04_minibatch_training.ipynb 212
 def get_dls(trn_ds, vld_ds, bs, **kwargs):
   return (DataLoader(trn_ds, batch_size=bs, shuffle=True, **kwargs),
           DataLoader(vld_ds, batch_size=bs*2, **kwargs))

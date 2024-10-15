@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['conv']
 
-# %% ../nbs/07_convolutions.ipynb 249
+# %% ../nbs/07_convolutions.ipynb 259
 def conv(ni, nf, ks=3, stride=2, act=True):
   res = nn.Conv2d(ni, nf, kernel_size=ks, stride=stride, padding=ks//2)
   if act: res = nn.Sequential(res, nn.ReLU())
