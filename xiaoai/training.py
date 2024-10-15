@@ -3,6 +3,9 @@
 # %% auto 0
 __all__ = ['accuracy', 'report', 'Dataset', 'fit', 'get_dls']
 
+# %% ../nbs/04_minibatch_training.ipynb 9
+import torch
+
 # %% ../nbs/04_minibatch_training.ipynb 74
 def accuracy(preds, yb): return ((preds.argmax(-1) == yb).sum()) / yb.shape[0]
 
@@ -19,7 +22,7 @@ class Dataset():
 from torch.utils.data import DataLoader, SequentialSampler, RandomSampler, BatchSampler
 
 # %% ../nbs/04_minibatch_training.ipynb 211
-def fit(epoch, model, loss_func, opt, trn_dl, vld_dl):
+def fit(epochs, model, loss_func, opt, trn_dl, vld_dl):
   for epoch in range(epochs):
     model.train()
     for xb, yb in trn_dl:
