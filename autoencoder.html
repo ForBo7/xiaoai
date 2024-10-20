@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Here, I attempt to train an autoencoder.">
+
+<title>Autoencoders – xiaoai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Autoencoders – xiaoai">
+<meta property="og:description" content="Here, I attempt to train an autoencoder.">
+<meta property="og:site_name" content="xiaoai">
+<meta name="twitter:title" content="Autoencoders – xiaoai">
+<meta name="twitter:description" content="Here, I attempt to train an autoencoder.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">xiaoai</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./autoencoder.html">Autoencoders</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">xiaoai</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./core.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">core</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_minibatch_training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./convolutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">convolutions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./autoencoder.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Autoencoders</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
+  <li><a href="#warmup---classify" id="toc-warmup---classify" class="nav-link" data-scroll-target="#warmup---classify">Warmup - Classify</a></li>
+  <li><a href="#autoencoder" id="toc-autoencoder" class="nav-link" data-scroll-target="#autoencoder">Autoencoder</a>
+  <ul class="collapse">
+  <li><a href="#eval" id="toc-eval" class="nav-link" data-scroll-target="#eval">eval</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ForBo7/xiaoai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="autoencoder.html.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Autoencoders</h1>
+</div>
+
+<div>
+  <div class="description">
+    Here, I attempt to train an autoencoder.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<div id="cell-4" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x,y <span class="op">=</span> <span class="st">'image'</span>,<span class="st">'label'</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">'fashion_mnist'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-5" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>?load_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature:
+load_dataset(
+    path: str,
+    name: Optional[str] = None,
+    data_dir: Optional[str] = None,
+    data_files: Union[str, Sequence[str], Mapping[str, Union[str, Sequence[str]]], NoneType] = None,
+    split: Union[str, datasets.splits.Split, NoneType] = None,
+    cache_dir: Optional[str] = None,
+    features: Optional[datasets.features.features.Features] = None,
+    download_config: Optional[datasets.download.download_config.DownloadConfig] = None,
+    download_mode: Union[datasets.download.download_manager.DownloadMode, str, NoneType] = None,
+    verification_mode: Union[datasets.utils.info_utils.VerificationMode, str, NoneType] = None,
+    ignore_verifications='deprecated',
+    keep_in_memory: Optional[bool] = None,
+    save_infos: bool = False,
+    revision: Union[str, datasets.utils.version.Version, NoneType] = None,
+    token: Union[bool, str, NoneType] = None,
+    use_auth_token='deprecated',
+    task='deprecated',
+    streaming: bool = False,
+    num_proc: Optional[int] = None,
+    storage_options: Optional[Dict] = None,
+    trust_remote_code: bool = None,
+    **config_kwargs,
+) -&gt; Union[datasets.dataset_dict.DatasetDict, datasets.arrow_dataset.Dataset, datasets.dataset_dict.IterableDatasetDict, datasets.iterable_dataset.IterableDataset]
+Docstring:
+Load a dataset from the Hugging Face Hub, or a local dataset.
+
+You can find the list of datasets on the [Hub](https://huggingface.co/datasets) or with [`huggingface_hub.list_datasets`].
+
+A dataset is a directory that contains:
+
+- some data files in generic formats (JSON, CSV, Parquet, text, etc.).
+- and optionally a dataset script, if it requires some code to read the data files. This is used to load any kind of formats or structures.
+
+Note that dataset scripts can also download and read data files from anywhere - in case your data files already exist online.
+
+This function does the following under the hood:
+
+    1. Download and import in the library the dataset script from `path` if it's not already cached inside the library.
+
+        If the dataset has no dataset script, then a generic dataset script is imported instead (JSON, CSV, Parquet, text, etc.)
+
+        Dataset scripts are small python scripts that define dataset builders. They define the citation, info and format of the dataset,
+        contain the path or URL to the original data files and the code to load examples from the original data files.
+
+        You can find the complete list of datasets in the Datasets [Hub](https://huggingface.co/datasets).
+
+    2. Run the dataset script which will:
+
+        * Download the dataset file from the original URL (see the script) if it's not already available locally or cached.
+        * Process and cache the dataset in typed Arrow tables for caching.
+
+            Arrow table are arbitrarily long, typed tables which can store nested objects and be mapped to numpy/pandas/python generic types.
+            They can be directly accessed from disk, loaded in RAM or even streamed over the web.
+
+    3. Return a dataset built from the requested splits in `split` (default: all).
+
+It also allows to load a dataset from a local directory or a dataset repository on the Hugging Face Hub without dataset script.
+In this case, it automatically loads all the data files from the directory or the dataset repository.
+
+Args:
+
+    path (`str`):
+        Path or name of the dataset.
+        Depending on `path`, the dataset builder that is used comes from a generic dataset script (JSON, CSV, Parquet, text etc.) or from the dataset script (a python file) inside the dataset directory.
+
+        For local datasets:
+
+        - if `path` is a local directory (containing data files only)
+          -&gt; load a generic dataset builder (csv, json, text etc.) based on the content of the directory
+          e.g. `'./path/to/directory/with/my/csv/data'`.
+        - if `path` is a local dataset script or a directory containing a local dataset script (if the script has the same name as the directory)
+          -&gt; load the dataset builder from the dataset script
+          e.g. `'./dataset/squad'` or `'./dataset/squad/squad.py'`.
+
+        For datasets on the Hugging Face Hub (list all available datasets with [`huggingface_hub.list_datasets`])
+
+        - if `path` is a dataset repository on the HF hub (containing data files only)
+          -&gt; load a generic dataset builder (csv, text etc.) based on the content of the repository
+          e.g. `'username/dataset_name'`, a dataset repository on the HF hub containing your data files.
+        - if `path` is a dataset repository on the HF hub with a dataset script (if the script has the same name as the directory)
+          -&gt; load the dataset builder from the dataset script in the dataset repository
+          e.g. `glue`, `squad`, `'username/dataset_name'`, a dataset repository on the HF hub containing a dataset script `'dataset_name.py'`.
+
+    name (`str`, *optional*):
+        Defining the name of the dataset configuration.
+    data_dir (`str`, *optional*):
+        Defining the `data_dir` of the dataset configuration. If specified for the generic builders (csv, text etc.) or the Hub datasets and `data_files` is `None`,
+        the behavior is equal to passing `os.path.join(data_dir, **)` as `data_files` to reference all the files in a directory.
+    data_files (`str` or `Sequence` or `Mapping`, *optional*):
+        Path(s) to source data file(s).
+    split (`Split` or `str`):
+        Which split of the data to load.
+        If `None`, will return a `dict` with all splits (typically `datasets.Split.TRAIN` and `datasets.Split.TEST`).
+        If given, will return a single Dataset.
+        Splits can be combined and specified like in tensorflow-datasets.
+    cache_dir (`str`, *optional*):
+        Directory to read/write data. Defaults to `"~/.cache/huggingface/datasets"`.
+    features (`Features`, *optional*):
+        Set the features type to use for this dataset.
+    download_config ([`DownloadConfig`], *optional*):
+        Specific download configuration parameters.
+    download_mode ([`DownloadMode`] or `str`, defaults to `REUSE_DATASET_IF_EXISTS`):
+        Download/generate mode.
+    verification_mode ([`VerificationMode`] or `str`, defaults to `BASIC_CHECKS`):
+        Verification mode determining the checks to run on the downloaded/processed dataset information (checksums/size/splits/...).
+
+        &lt;Added version="2.9.1"/&gt;
+    ignore_verifications (`bool`, defaults to `False`):
+        Ignore the verifications of the downloaded/processed dataset information (checksums/size/splits/...).
+
+        &lt;Deprecated version="2.9.1"&gt;
+
+        `ignore_verifications` was deprecated in version 2.9.1 and will be removed in 3.0.0.
+        Please use `verification_mode` instead.
+
+        &lt;/Deprecated&gt;
+    keep_in_memory (`bool`, defaults to `None`):
+        Whether to copy the dataset in-memory. If `None`, the dataset
+        will not be copied in-memory unless explicitly enabled by setting `datasets.config.IN_MEMORY_MAX_SIZE` to
+        nonzero. See more details in the [improve performance](../cache#improve-performance) section.
+    save_infos (`bool`, defaults to `False`):
+        Save the dataset information (checksums/size/splits/...).
+    revision ([`Version`] or `str`, *optional*):
+        Version of the dataset script to load.
+        As datasets have their own git repository on the Datasets Hub, the default version "main" corresponds to their "main" branch.
+        You can specify a different version than the default "main" by using a commit SHA or a git tag of the dataset repository.
+    token (`str` or `bool`, *optional*):
+        Optional string or boolean to use as Bearer token for remote files on the Datasets Hub.
+        If `True`, or not specified, will get token from `"~/.huggingface"`.
+    use_auth_token (`str` or `bool`, *optional*):
+        Optional string or boolean to use as Bearer token for remote files on the Datasets Hub.
+        If `True`, or not specified, will get token from `"~/.huggingface"`.
+
+        &lt;Deprecated version="2.14.0"&gt;
+
+        `use_auth_token` was deprecated in favor of `token` in version 2.14.0 and will be removed in 3.0.0.
+
+        &lt;/Deprecated&gt;
+    task (`str`):
+        The task to prepare the dataset for during training and evaluation. Casts the dataset's [`Features`] to standardized column names and types as detailed in `datasets.tasks`.
+
+        &lt;Deprecated version="2.13.0"&gt;
+
+        `task` was deprecated in version 2.13.0 and will be removed in 3.0.0.
+
+        &lt;/Deprecated&gt;
+    streaming (`bool`, defaults to `False`):
+        If set to `True`, don't download the data files. Instead, it streams the data progressively while
+        iterating on the dataset. An [`IterableDataset`] or [`IterableDatasetDict`] is returned instead in this case.
+
+        Note that streaming works for datasets that use data formats that support being iterated over like txt, csv, jsonl for example.
+        Json files may be downloaded completely. Also streaming from remote zip or gzip files is supported but other compressed formats
+        like rar and xz are not yet supported. The tgz format doesn't allow streaming.
+    num_proc (`int`, *optional*, defaults to `None`):
+        Number of processes when downloading and generating the dataset locally.
+        Multiprocessing is disabled by default.
+
+        &lt;Added version="2.7.0"/&gt;
+    storage_options (`dict`, *optional*, defaults to `None`):
+        **Experimental**. Key/value pairs to be passed on to the dataset file-system backend, if any.
+
+        &lt;Added version="2.11.0"/&gt;
+    trust_remote_code (`bool`, defaults to `True`):
+        Whether or not to allow for datasets defined on the Hub using a dataset script. This option
+        should only be set to `True` for repositories you trust and in which you have read the code, as it will
+        execute code present on the Hub on your local machine.
+
+        &lt;Tip warning={true}&gt;
+
+        `trust_remote_code` will default to False in the next major release.
+
+        &lt;/Tip&gt;
+
+        &lt;Added version="2.16.0"/&gt;
+    **config_kwargs (additional keyword arguments):
+        Keyword arguments to be passed to the `BuilderConfig`
+        and used in the [`DatasetBuilder`].
+
+Returns:
+    [`Dataset`] or [`DatasetDict`]:
+    - if `split` is not `None`: the dataset requested,
+    - if `split` is `None`, a [`~datasets.DatasetDict`] with each split.
+
+    or [`IterableDataset`] or [`IterableDatasetDict`]: if `streaming=True`
+
+    - if `split` is not `None`, the dataset is requested
+    - if `split` is `None`, a [`~datasets.streaming.IterableDatasetDict`] with each split.
+
+Example:
+
+Load a dataset from the Hugging Face Hub:
+
+```py
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset('rotten_tomatoes', split='train')
+
+# Map data files to splits
+&gt;&gt;&gt; data_files = {'train': 'train.csv', 'test': 'test.csv'}
+&gt;&gt;&gt; ds = load_dataset('namespace/your_dataset_name', data_files=data_files)
+```
+
+Load a local dataset:
+
+```py
+# Load a CSV file
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset('csv', data_files='path/to/local/my_dataset.csv')
+
+# Load a JSON file
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset('json', data_files='path/to/local/my_dataset.json')
+
+# Load from a local loading script
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset('path/to/local/loading_script/loading_script.py', split='train')
+```
+
+Load an [`~datasets.IterableDataset`]:
+
+```py
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset('rotten_tomatoes', split='train', streaming=True)
+```
+
+Load an image dataset with the `ImageFolder` dataset builder:
+
+```py
+&gt;&gt;&gt; from datasets import load_dataset
+&gt;&gt;&gt; ds = load_dataset('imagefolder', data_dir='/path/to/images', split='train')
+```
+File:      ~/miniforge3/envs/default/lib/python3.11/site-packages/datasets/load.py
+Type:      function</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dsd <span class="op">=</span> load_dataset(name, verification_mode<span class="op">=</span><span class="st">'no_checks'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-8" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xiaoai.core <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.transforms.functional <span class="im">as</span> TF</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">@inplace</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transformi(b): [TF.to_tensor(o) <span class="cf">for</span> o <span class="kw">in</span> b[x]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bs <span class="op">=</span> <span class="dv">256</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tdsd <span class="op">=</span> dsd.with_transform(transformi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> tdsd[<span class="st">'train'</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> ds[<span class="dv">0</span>][<span class="st">'image'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-12" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> rcParams</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-13" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'image.cmap'</span>] <span class="op">=</span> <span class="st">'grey'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>show_image(img, figsize<span class="op">=</span>(<span class="dv">1</span>,<span class="dv">1</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-15" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>??collate_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature: collate_dict(ds)
+Docstring: &lt;no docstring&gt;
+Source:   
+def collate_dict(ds):
+  get = itemgetter(*ds.features)
+  def _f(b): return get(default_collate(b))
+  return _f
+File:      ~/Documents/S07/40–49 Artificial Intelligence/42 Miniprojects/xiaoai/xiaoai/core.py
+Type:      function</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cf <span class="op">=</span> collate_dict(ds)<span class="op">;</span> cf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;function xiaoai.core.collate_dict.&lt;locals&gt;._f(b)&gt;</code></pre>
+</div>
+</div>
+<div id="cell-17" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xiaoai.conv <span class="im">import</span> to_device</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-18" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collate_(b): <span class="cf">return</span> to_device(cf(b))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data_loaders(dsd, bs, <span class="op">**</span>kwargs): <span class="cf">return</span> {k:DataLoader(v, bs, <span class="op">**</span>kwargs) <span class="cf">for</span> k,v <span class="kw">in</span> dsd.items()}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> data_loaders(tdsd, bs, collate_fn<span class="op">=</span>collate_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-20" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dlst, dlsv <span class="op">=</span> dls[<span class="st">'train'</span>], dls[<span class="st">'test'</span>]<span class="op">;</span> dlst, dlsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(&lt;torch.utils.data.dataloader.DataLoader&gt;,
+ &lt;torch.utils.data.dataloader.DataLoader&gt;)</code></pre>
+</div>
+</div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xiaoai.core <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xiaoai.conv <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> suplog(): xb,yb <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(dlst))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Traceback (most recent call last):
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 155, in collate
+    clone.update({key: collate([d[key] for d in batch], collate_fn_map=collate_fn_map) for key in elem})
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 155, in &lt;dictcomp&gt;
+    clone.update({key: collate([d[key] for d in batch], collate_fn_map=collate_fn_map) for key in elem})
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 192, in collate
+    raise TypeError(default_collate_err_msg_format.format(elem_type))
+TypeError: default_collate: batch must contain tensors, numpy arrays, numbers, dicts or lists; found &lt;class 'PIL.PngImagePlugin.PngImageFile'&gt;
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/salmannaqvi/Documents/S07/40–49 Artificial Intelligence/42 Miniprojects/xiaoai/xiaoai/conv.py", line 14, in suplog
+    try: yield
+         ^^^^^
+  File "/var/folders/fy/vg316qk1001227svr6d4d8l40000gn/T/ipykernel_21414/2296631074.py", line 1, in &lt;module&gt;
+    with suplog(): xb,yb = next(iter(dlst))
+                           ^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 673, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
+    return self.collate_fn(data)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/fy/vg316qk1001227svr6d4d8l40000gn/T/ipykernel_21414/3900802733.py", line 1, in collate_
+    def collate_(b): return to_device(cf(b))
+                                      ^^^^^
+  File "/Users/salmannaqvi/Documents/S07/40–49 Artificial Intelligence/42 Miniprojects/xiaoai/xiaoai/core.py", line 27, in _f
+    def _f(b): return get(default_collate(b))
+                          ^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 317, in default_collate
+    return collate(batch, collate_fn_map=default_collate_fn_map)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 162, in collate
+    return {key: collate([d[key] for d in batch], collate_fn_map=collate_fn_map) for key in elem}
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 162, in &lt;dictcomp&gt;
+    return {key: collate([d[key] for d in batch], collate_fn_map=collate_fn_map) for key in elem}
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/salmannaqvi/miniforge3/envs/default/lib/python3.11/site-packages/torch/utils/data/_utils/collate.py", line 192, in collate
+    raise TypeError(default_collate_err_msg_format.format(elem_type))
+TypeError: default_collate: batch must contain tensors, numpy arrays, numbers, dicts or lists; found &lt;class 'PIL.PngImagePlugin.PngImageFile'&gt;</code></pre>
+</div>
+</div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tdsd[<span class="st">'train'</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': &lt;PIL.PngImagePlugin.PngImageFile image mode=L size=28x28&gt;,
+ 'label': 9}</code></pre>
+</div>
+</div>
+<p>It seems that <code>transformi</code> is not working. 🤨</p>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>??transformi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature: transformi(b)
+Docstring: &lt;no docstring&gt;
+Source:   
+  def _f(b):
+    f(b)
+    return b
+File:      ~/Documents/S07/40–49 Artificial Intelligence/42 Miniprojects/xiaoai/xiaoai/core.py
+Type:      function</code></pre>
+</div>
+</div>
+<p>Upon further inspection, it’s because after creating the list, I’m not assigning it back to the batch! Let’s fix that.</p>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="at">@inplace</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transformi(b): b[x] <span class="op">=</span> [TF.to_tensor(o) <span class="cf">for</span> o <span class="kw">in</span> b[x]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-28" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tdsd <span class="op">=</span> dsd.with_transform(transformi)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>tdsd[<span class="st">'train'</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': tensor([[[0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0039, 0.0000, 0.0000, 0.0510,
+           0.2863, 0.0000, 0.0000, 0.0039, 0.0157, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0039, 0.0039, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0118, 0.0000, 0.1412, 0.5333,
+           0.4980, 0.2431, 0.2118, 0.0000, 0.0000, 0.0000, 0.0039, 0.0118,
+           0.0157, 0.0000, 0.0000, 0.0118],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0235, 0.0000, 0.4000, 0.8000,
+           0.6902, 0.5255, 0.5647, 0.4824, 0.0902, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0471, 0.0392, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.6078, 0.9255,
+           0.8118, 0.6980, 0.4196, 0.6118, 0.6314, 0.4275, 0.2510, 0.0902,
+           0.3020, 0.5098, 0.2824, 0.0588],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0039, 0.0000, 0.2706, 0.8118, 0.8745,
+           0.8549, 0.8471, 0.8471, 0.6392, 0.4980, 0.4745, 0.4784, 0.5725,
+           0.5529, 0.3451, 0.6745, 0.2588],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0039, 0.0039, 0.0039, 0.0000, 0.7843, 0.9098, 0.9098,
+           0.9137, 0.8980, 0.8745, 0.8745, 0.8431, 0.8353, 0.6431, 0.4980,
+           0.4824, 0.7686, 0.8980, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.7176, 0.8824, 0.8471,
+           0.8745, 0.8941, 0.9216, 0.8902, 0.8784, 0.8706, 0.8784, 0.8667,
+           0.8745, 0.9608, 0.6784, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.7569, 0.8941, 0.8549,
+           0.8353, 0.7765, 0.7059, 0.8314, 0.8235, 0.8275, 0.8353, 0.8745,
+           0.8627, 0.9529, 0.7922, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0039, 0.0118, 0.0000, 0.0471, 0.8588, 0.8627, 0.8314,
+           0.8549, 0.7529, 0.6627, 0.8902, 0.8157, 0.8549, 0.8784, 0.8314,
+           0.8863, 0.7725, 0.8196, 0.2039],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0235, 0.0000, 0.3882, 0.9569, 0.8706, 0.8627,
+           0.8549, 0.7961, 0.7765, 0.8667, 0.8431, 0.8353, 0.8706, 0.8627,
+           0.9608, 0.4667, 0.6549, 0.2196],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0157, 0.0000, 0.0000, 0.2157, 0.9255, 0.8941, 0.9020,
+           0.8941, 0.9412, 0.9098, 0.8353, 0.8549, 0.8745, 0.9176, 0.8510,
+           0.8510, 0.8196, 0.3608, 0.0000],
+          [0.0000, 0.0000, 0.0039, 0.0157, 0.0235, 0.0275, 0.0078, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.9294, 0.8863, 0.8510, 0.8745,
+           0.8706, 0.8588, 0.8706, 0.8667, 0.8471, 0.8745, 0.8980, 0.8431,
+           0.8549, 1.0000, 0.3020, 0.0000],
+          [0.0000, 0.0118, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.2431, 0.5686, 0.8000, 0.8941, 0.8118, 0.8353, 0.8667,
+           0.8549, 0.8157, 0.8275, 0.8549, 0.8784, 0.8745, 0.8588, 0.8431,
+           0.8784, 0.9569, 0.6235, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0706, 0.1725, 0.3216, 0.4196,
+           0.7412, 0.8941, 0.8627, 0.8706, 0.8510, 0.8863, 0.7843, 0.8039,
+           0.8275, 0.9020, 0.8784, 0.9176, 0.6902, 0.7373, 0.9804, 0.9725,
+           0.9137, 0.9333, 0.8431, 0.0000],
+          [0.0000, 0.2235, 0.7333, 0.8157, 0.8784, 0.8667, 0.8784, 0.8157,
+           0.8000, 0.8392, 0.8157, 0.8196, 0.7843, 0.6235, 0.9608, 0.7569,
+           0.8078, 0.8745, 1.0000, 1.0000, 0.8667, 0.9176, 0.8667, 0.8275,
+           0.8627, 0.9098, 0.9647, 0.0000],
+          [0.0118, 0.7922, 0.8941, 0.8784, 0.8667, 0.8275, 0.8275, 0.8392,
+           0.8039, 0.8039, 0.8039, 0.8627, 0.9412, 0.3137, 0.5882, 1.0000,
+           0.8980, 0.8667, 0.7373, 0.6039, 0.7490, 0.8235, 0.8000, 0.8196,
+           0.8706, 0.8941, 0.8824, 0.0000],
+          [0.3843, 0.9137, 0.7765, 0.8235, 0.8706, 0.8980, 0.8980, 0.9176,
+           0.9765, 0.8627, 0.7608, 0.8431, 0.8510, 0.9451, 0.2549, 0.2863,
+           0.4157, 0.4588, 0.6588, 0.8588, 0.8667, 0.8431, 0.8510, 0.8745,
+           0.8745, 0.8784, 0.8980, 0.1137],
+          [0.2941, 0.8000, 0.8314, 0.8000, 0.7569, 0.8039, 0.8275, 0.8824,
+           0.8471, 0.7255, 0.7725, 0.8078, 0.7765, 0.8353, 0.9412, 0.7647,
+           0.8902, 0.9608, 0.9373, 0.8745, 0.8549, 0.8314, 0.8196, 0.8706,
+           0.8627, 0.8667, 0.9020, 0.2627],
+          [0.1882, 0.7961, 0.7176, 0.7608, 0.8353, 0.7725, 0.7255, 0.7451,
+           0.7608, 0.7529, 0.7922, 0.8392, 0.8588, 0.8667, 0.8627, 0.9255,
+           0.8824, 0.8471, 0.7804, 0.8078, 0.7294, 0.7098, 0.6941, 0.6745,
+           0.7098, 0.8039, 0.8078, 0.4510],
+          [0.0000, 0.4784, 0.8588, 0.7569, 0.7020, 0.6706, 0.7176, 0.7686,
+           0.8000, 0.8235, 0.8353, 0.8118, 0.8275, 0.8235, 0.7843, 0.7686,
+           0.7608, 0.7490, 0.7647, 0.7490, 0.7765, 0.7529, 0.6902, 0.6118,
+           0.6549, 0.6941, 0.8235, 0.3608],
+          [0.0000, 0.0000, 0.2902, 0.7412, 0.8314, 0.7490, 0.6863, 0.6745,
+           0.6863, 0.7098, 0.7255, 0.7373, 0.7412, 0.7373, 0.7569, 0.7765,
+           0.8000, 0.8196, 0.8235, 0.8235, 0.8275, 0.7373, 0.7373, 0.7608,
+           0.7529, 0.8471, 0.6667, 0.0000],
+          [0.0078, 0.0000, 0.0000, 0.0000, 0.2588, 0.7843, 0.8706, 0.9294,
+           0.9373, 0.9490, 0.9647, 0.9529, 0.9569, 0.8667, 0.8627, 0.7569,
+           0.7490, 0.7020, 0.7137, 0.7137, 0.7098, 0.6902, 0.6510, 0.6588,
+           0.3882, 0.2275, 0.0000, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.1569,
+           0.2392, 0.1725, 0.2824, 0.1608, 0.1373, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000],
+          [0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000,
+           0.0000, 0.0000, 0.0000, 0.0000]]]),
+ 'label': 9}</code></pre>
+</div>
+</div>
+<p>There! Working.</p>
+<div id="cell-30" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> tdsd[<span class="st">'train'</span>]</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>cf <span class="op">=</span> collate_dict(ds)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> data_loaders(tdsd, bs, collate_fn<span class="op">=</span>collate_)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>dlst, dlsv <span class="op">=</span> dls[<span class="st">'train'</span>], dls[<span class="st">'test'</span>]<span class="op">;</span> dlst, dlsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(&lt;torch.utils.data.dataloader.DataLoader&gt;,
+ &lt;torch.utils.data.dataloader.DataLoader&gt;)</code></pre>
+</div>
+</div>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>xb,yb <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(dlst))<span class="op">;</span> xb,yb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(tensor([[[[0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           ...,
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+         [[[0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           ...,
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+         [[[0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           ...,
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+         ...,
+ 
+ 
+         [[[0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           ...,
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+         [[[0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           ...,
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.]]],
+ 
+ 
+         [[[0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           ...,
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.],
+           [0., 0., 0.,  ..., 0., 0., 0.]]]], device='mps:0'),
+ tensor([9, 0, 0, 3, 0, 2, 7, 2, 5, 5, 0, 9, 5, 5, 7, 9, 1, 0, 6, 4, 3, 1, 4, 8,
+         4, 3, 0, 2, 4, 4, 5, 3, 6, 6, 0, 8, 5, 2, 1, 6, 6, 7, 9, 5, 9, 2, 7, 3,
+         0, 3, 3, 3, 7, 2, 2, 6, 6, 8, 3, 3, 5, 0, 5, 5, 0, 2, 0, 0, 4, 1, 3, 1,
+         6, 3, 1, 4, 4, 6, 1, 9, 1, 3, 5, 7, 9, 7, 1, 7, 9, 9, 9, 3, 2, 9, 3, 6,
+         4, 1, 1, 8, 8, 0, 1, 1, 6, 8, 1, 9, 7, 8, 8, 9, 6, 6, 3, 1, 5, 4, 6, 7,
+         5, 5, 9, 2, 2, 2, 7, 6, 4, 1, 8, 7, 7, 5, 4, 2, 9, 1, 7, 4, 6, 9, 7, 1,
+         8, 7, 1, 2, 8, 0, 9, 1, 8, 7, 0, 5, 8, 6, 7, 2, 0, 8, 7, 1, 6, 2, 1, 9,
+         6, 0, 1, 0, 5, 5, 1, 7, 0, 5, 8, 4, 0, 4, 0, 6, 6, 4, 0, 0, 4, 7, 3, 0,
+         5, 8, 4, 1, 1, 2, 9, 2, 8, 5, 0, 6, 3, 4, 6, 0, 9, 1, 7, 3, 8, 5, 8, 3,
+         8, 5, 2, 0, 8, 7, 0, 3, 5, 0, 6, 5, 2, 7, 5, 2, 6, 8, 2, 6, 8, 0, 4, 4,
+         4, 4, 4, 1, 5, 6, 5, 3, 3, 7, 3, 3, 6, 2, 8, 4], device='mps:0'))</code></pre>
+</div>
+</div>
+<div id="cell-32" class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>xb.shape, yb.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(torch.Size([256, 1, 28, 28]), torch.Size([256]))</code></pre>
+</div>
+</div>
+<div id="cell-33" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>tdsd[<span class="st">'train'</span>].features</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'image': Image(mode=None, decode=True, id=None),
+ 'label': ClassLabel(names=['T - shirt / top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'], id=None)}</code></pre>
+</div>
+</div>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> operator <span class="im">import</span> itemgetter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>operator.itemgetter(tensor(9, device='mps:0'), tensor(0, device='mps:0'), tensor(0, device='mps:0'), tensor(3, device='mps:0'), tensor(0, device='mps:0'), tensor(2, device='mps:0'), tensor(7, device='mps:0'), tensor(2, device='mps:0'), tensor(5, device='mps:0'), tensor(5, device='mps:0'), tensor(0, device='mps:0'), tensor(9, device='mps:0'), tensor(5, device='mps:0'), tensor(5, device='mps:0'), tensor(7, device='mps:0'), tensor(9, device='mps:0'))</code></pre>
+</div>
+</div>
+<div id="cell-35" class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>lbl_getter <span class="op">=</span> itemgetter(<span class="op">*</span>yb[:<span class="dv">16</span>])<span class="op">;</span> lbl_getter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>tdsd[<span class="st">'train'</span>].features[<span class="st">'label'</span>].names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>['T - shirt / top',
+ 'Trouser',
+ 'Pullover',
+ 'Dress',
+ 'Coat',
+ 'Sandal',
+ 'Shirt',
+ 'Sneaker',
+ 'Bag',
+ 'Ankle boot']</code></pre>
+</div>
+</div>
+<div id="cell-37" class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> lbl_getter(tdsd[<span class="st">'train'</span>].features[<span class="st">'label'</span>].names)<span class="op">;</span> labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>('Ankle boot',
+ 'T - shirt / top',
+ 'T - shirt / top',
+ 'Dress',
+ 'T - shirt / top',
+ 'Pullover',
+ 'Sneaker',
+ 'Pullover',
+ 'Sandal',
+ 'Sandal',
+ 'T - shirt / top',
+ 'Ankle boot',
+ 'Sandal',
+ 'Sandal',
+ 'Sneaker',
+ 'Ankle boot')</code></pre>
+</div>
+</div>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>?show_images</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature:
+show_images(
+    ims: list,
+    nrows: int | None = None,
+    ncols: int | None = None,
+    titles: list | None = None,
+    *,
+    figsize: tuple = None,
+    imsize: int = 3,
+    suptitle: str = None,
+    sharex: "bool | Literal['none', 'all', 'row', 'col']" = False,
+    sharey: "bool | Literal['none', 'all', 'row', 'col']" = False,
+    squeeze: 'bool' = True,
+    width_ratios: 'Sequence[float] | None' = None,
+    height_ratios: 'Sequence[float] | None' = None,
+    subplot_kw: 'dict[str, Any] | None' = None,
+    gridspec_kw: 'dict[str, Any] | None' = None,
+)
+Docstring: Show all images `ims` as subplots with `rows` using `titles`
+File:      ~/Documents/S07/40–49 Artificial Intelligence/42 Miniprojects/xiaoai/xiaoai/core.py
+Type:      function</code></pre>
+</div>
+</div>
+<div id="cell-39" class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>show_images(xb[:<span class="dv">16</span>], titles<span class="op">=</span>labels, imsize<span class="op">=</span><span class="fl">1.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="warmup---classify" class="level2">
+<h2 class="anchored" data-anchor-id="warmup---classify">Warmup - Classify</h2>
+<div id="cell-41" class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xiaoai.conv <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-42" class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>cnn <span class="op">=</span> nn.Sequential(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  conv( <span class="dv">1</span>, <span class="dv">4</span>), <span class="co"># 14x14</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  conv( <span class="dv">4</span>, <span class="dv">8</span>), <span class="co"># 7x7</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  conv( <span class="dv">8</span>,<span class="dv">16</span>), <span class="co"># 4x4</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">16</span>,<span class="dv">16</span>), <span class="co"># 2x2</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">16</span>,<span class="dv">10</span>, act<span class="op">=</span><span class="va">False</span>), <span class="co"># 1x1</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  nn.Flatten()</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>).to(def_device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-43" class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>bs,lr <span class="op">=</span> <span class="dv">256</span>,<span class="fl">.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-44" class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> optim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Init signature:
+optim.SGD(
+    params,
+    lr: float = 0.001,
+    momentum: float = 0,
+    dampening: float = 0,
+    weight_decay: float = 0,
+    nesterov=False,
+    *,
+    maximize: bool = False,
+    foreach: Optional[bool] = None,
+    differentiable: bool = False,
+    fused: Optional[bool] = None,
+)
+Docstring:     
+Implements stochastic gradient descent (optionally with momentum).
+
+.. math::
+   \begin{aligned}
+        &amp;\rule{110mm}{0.4pt}                                                                 \\
+        &amp;\textbf{input}      : \gamma \text{ (lr)}, \: \theta_0 \text{ (params)}, \: f(\theta)
+            \text{ (objective)}, \: \lambda \text{ (weight decay)},                          \\
+        &amp;\hspace{13mm} \:\mu \text{ (momentum)}, \:\tau \text{ (dampening)},
+        \:\textit{ nesterov,}\:\textit{ maximize}                                     \\[-1.ex]
+        &amp;\rule{110mm}{0.4pt}                                                                 \\
+        &amp;\textbf{for} \: t=1 \: \textbf{to} \: \ldots \: \textbf{do}                         \\
+        &amp;\hspace{5mm}g_t           \leftarrow   \nabla_{\theta} f_t (\theta_{t-1})           \\
+        &amp;\hspace{5mm}\textbf{if} \: \lambda \neq 0                                           \\
+        &amp;\hspace{10mm} g_t \leftarrow g_t + \lambda  \theta_{t-1}                            \\
+        &amp;\hspace{5mm}\textbf{if} \: \mu \neq 0                                               \\
+        &amp;\hspace{10mm}\textbf{if} \: t &gt; 1                                                   \\
+        &amp;\hspace{15mm} \textbf{b}_t \leftarrow \mu \textbf{b}_{t-1} + (1-\tau) g_t           \\
+        &amp;\hspace{10mm}\textbf{else}                                                          \\
+        &amp;\hspace{15mm} \textbf{b}_t \leftarrow g_t                                           \\
+        &amp;\hspace{10mm}\textbf{if} \: \textit{nesterov}                                       \\
+        &amp;\hspace{15mm} g_t \leftarrow g_{t} + \mu \textbf{b}_t                             \\
+        &amp;\hspace{10mm}\textbf{else}                                                   \\[-1.ex]
+        &amp;\hspace{15mm} g_t  \leftarrow  \textbf{b}_t                                         \\
+        &amp;\hspace{5mm}\textbf{if} \: \textit{maximize}                                          \\
+        &amp;\hspace{10mm}\theta_t \leftarrow \theta_{t-1} + \gamma g_t                   \\[-1.ex]
+        &amp;\hspace{5mm}\textbf{else}                                                    \\[-1.ex]
+        &amp;\hspace{10mm}\theta_t \leftarrow \theta_{t-1} - \gamma g_t                   \\[-1.ex]
+        &amp;\rule{110mm}{0.4pt}                                                          \\[-1.ex]
+        &amp;\bf{return} \:  \theta_t                                                     \\[-1.ex]
+        &amp;\rule{110mm}{0.4pt}                                                          \\[-1.ex]
+   \end{aligned}
+
+Nesterov momentum is based on the formula from
+`On the importance of initialization and momentum in deep learning`__.
+
+Args:
+    params (iterable): iterable of parameters to optimize or dicts defining
+        parameter groups
+    lr (float, optional): learning rate (default: 1e-3)
+    momentum (float, optional): momentum factor (default: 0)
+    weight_decay (float, optional): weight decay (L2 penalty) (default: 0)
+    dampening (float, optional): dampening for momentum (default: 0)
+    nesterov (bool, optional): enables Nesterov momentum (default: False)
+    maximize (bool, optional): maximize the objective with respect to the
+        params, instead of minimizing (default: False)
+    foreach (bool, optional): whether foreach implementation of optimizer
+        is used. If unspecified by the user (so foreach is None), we will try to use
+        foreach over the for-loop implementation on CUDA, since it is usually
+        significantly more performant. Note that the foreach implementation uses
+        ~ sizeof(params) more peak memory than the for-loop version due to the intermediates
+        being a tensorlist vs just one tensor. If memory is prohibitive, batch fewer
+        parameters through the optimizer at a time or switch this flag to False (default: None)
+    differentiable (bool, optional): whether autograd should
+        occur through the optimizer step in training. Otherwise, the step()
+        function runs in a torch.no_grad() context. Setting to True can impair
+        performance, so leave it False if you don't intend to run autograd
+        through this instance (default: False)
+    fused (bool, optional): whether the fused implementation is used.
+        Currently, `torch.float64`, `torch.float32`, `torch.float16`, and `torch.bfloat16`
+        are supported. (default: None)
+
+.. note:: The foreach and fused implementations are typically faster than the for-loop,
+          single-tensor implementation. Thus, if the user has not specified BOTH flags
+          (i.e., when foreach = fused = None), we will attempt defaulting to the foreach
+          implementation when the tensors are all on CUDA. For example, if the user specifies
+          True for fused but nothing for foreach, we will run the fused implementation. If
+          the user specifies False for foreach but nothing for fused (or False for fused but
+          nothing for foreach), we will run the for-loop implementation. If the user specifies
+          True for both foreach and fused, we will prioritize fused over foreach, as it is
+          typically faster. We attempt to use the fastest, so the hierarchy goes fused -&gt;
+          foreach -&gt; for-loop. HOWEVER, since the fused implementation is relatively new,
+          we want to give it sufficient bake-in time, so we default to foreach and NOT
+          fused when the user has not specified either flag.
+
+
+Example:
+    &gt;&gt;&gt; # xdoctest: +SKIP
+    &gt;&gt;&gt; optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9)
+    &gt;&gt;&gt; optimizer.zero_grad()
+    &gt;&gt;&gt; loss_fn(model(input), target).backward()
+    &gt;&gt;&gt; optimizer.step()
+
+__ http://www.cs.toronto.edu/%7Ehinton/absps/momentum.pdf
+
+.. note::
+    The implementation of SGD with Momentum/Nesterov subtly differs from
+    Sutskever et al. and implementations in some other frameworks.
+
+    Considering the specific case of Momentum, the update can be written as
+
+    .. math::
+        \begin{aligned}
+            v_{t+1} &amp; = \mu * v_{t} + g_{t+1}, \\
+            p_{t+1} &amp; = p_{t} - \text{lr} * v_{t+1},
+        \end{aligned}
+
+    where :math:`p`, :math:`g`, :math:`v` and :math:`\mu` denote the
+    parameters, gradient, velocity, and momentum respectively.
+
+    This is in contrast to Sutskever et al. and
+    other frameworks which employ an update of the form
+
+    .. math::
+        \begin{aligned}
+            v_{t+1} &amp; = \mu * v_{t} + \text{lr} * g_{t+1}, \\
+            p_{t+1} &amp; = p_{t} - v_{t+1}.
+        \end{aligned}
+
+    The Nesterov version is analogously modified.
+
+    Moreover, the initial value of the momentum buffer is set to the
+    gradient value at the first step. This is in contrast to some other
+    frameworks that initialize it to all zeros.
+File:           ~/miniforge3/envs/default/lib/python3.11/site-packages/torch/optim/sgd.py
+Type:           type
+Subclasses:     NewCls</code></pre>
+</div>
+</div>
+<div id="cell-45" class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>?optim.SGD</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-46" class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(cnn.parameters(), lr<span class="op">=</span>lr)<span class="op">;</span> opt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    fused: None
+    lr: 0.4
+    maximize: False
+    momentum: 0
+    nesterov: False
+    weight_decay: 0
+)</code></pre>
+</div>
+</div>
+<div id="cell-47" class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xiaoai.training <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-48" class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>??fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature: fit(epochs, model, loss_func, opt, trn_dl, vld_dl)
+Docstring: &lt;no docstring&gt;
+Source:   
+def fit(epochs, model, loss_func, opt, trn_dl, vld_dl):
+  for epoch in range(epochs):
+    model.train()
+    for xb, yb in trn_dl:
+      loss = loss_func(model(xb), yb)
+      loss.backward()
+      opt.step()
+      opt.zero_grad()
+    
+    model.eval()
+    with torch.no_grad():
+      tot_loss, tot_acc, count = 0., 0., 0
+      for xb, yb in vld_dl:
+        preds = model(xb)
+        n = len(xb)
+        count += n
+        tot_loss += loss_func(preds, yb).item() * n
+        tot_acc  += accuracy (preds, yb).item() * n
+    print(epoch, tot_loss/count, tot_acc/count)
+  return tot_loss/count, tot_acc/count
+File:      ~/Documents/S07/40–49 Artificial Intelligence/42 Miniprojects/xiaoai/xiaoai/training.py
+Type:      function</code></pre>
+</div>
+</div>
+<div id="cell-49" class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-50" class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>loss,acc <span class="op">=</span> fit(<span class="dv">5</span>, cnn, F.cross_entropy, opt, dlst, dlsv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 1.112137004852295 0.6341
+1 0.6192411111831665 0.7772
+2 0.5116905662536622 0.8181
+3 0.511855121088028 0.815
+4 0.5068988255739212 0.8156</code></pre>
+</div>
+</div>
+</section>
+<section id="autoencoder" class="level1">
+<h1>Autoencoder</h1>
+<div id="cell-52" class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>?nn.UpsamplingNearest2d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Init signature:
+nn.UpsamplingNearest2d(
+    size: Union[int, Tuple[int, int], NoneType] = None,
+    scale_factor: Union[float, Tuple[float, float], NoneType] = None,
+) -&gt; None
+Docstring:     
+Applies a 2D nearest neighbor upsampling to an input signal composed of several input channels.
+
+To specify the scale, it takes either the :attr:`size` or the :attr:`scale_factor`
+as it's constructor argument.
+
+When :attr:`size` is given, it is the output size of the image `(h, w)`.
+
+Args:
+    size (int or Tuple[int, int], optional): output spatial sizes
+    scale_factor (float or Tuple[float, float], optional): multiplier for
+        spatial size.
+
+.. warning::
+    This class is deprecated in favor of :func:`~nn.functional.interpolate`.
+
+Shape:
+    - Input: :math:`(N, C, H_{in}, W_{in})`
+    - Output: :math:`(N, C, H_{out}, W_{out})` where
+
+.. math::
+      H_{out} = \left\lfloor H_{in} \times \text{scale\_factor} \right\rfloor
+
+.. math::
+      W_{out} = \left\lfloor W_{in} \times \text{scale\_factor} \right\rfloor
+
+Examples::
+
+    &gt;&gt;&gt; input = torch.arange(1, 5, dtype=torch.float32).view(1, 1, 2, 2)
+    &gt;&gt;&gt; input
+    tensor([[[[1., 2.],
+              [3., 4.]]]])
+
+    &gt;&gt;&gt; m = nn.UpsamplingNearest2d(scale_factor=2)
+    &gt;&gt;&gt; m(input)
+    tensor([[[[1., 1., 2., 2.],
+              [1., 1., 2., 2.],
+              [3., 3., 4., 4.],
+              [3., 3., 4., 4.]]]])
+Init docstring: Initialize internal Module state, shared by both nn.Module and ScriptModule.
+File:           ~/miniforge3/envs/default/lib/python3.11/site-packages/torch/nn/modules/upsampling.py
+Type:           type
+Subclasses:     </code></pre>
+</div>
+</div>
+<div id="cell-53" class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> tensor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-54" class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> tensor([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],[<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]])[<span class="va">None</span>,<span class="va">None</span>,...].<span class="bu">float</span>()<span class="op">;</span> t, t.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(tensor([[[[1., 2., 3.],
+           [4., 5., 6.]]]]),
+ torch.Size([1, 1, 2, 3]))</code></pre>
+</div>
+</div>
+<div id="cell-55" class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>upsample <span class="op">=</span> nn.UpsamplingNearest2d(size<span class="op">=</span>(<span class="dv">4</span>,<span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-56" class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>?upsample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Signature:      upsample(*args, **kwargs)
+Type:           UpsamplingNearest2d
+String form:    UpsamplingNearest2d(size=(4, 6), mode='nearest')
+File:           ~/miniforge3/envs/default/lib/python3.11/site-packages/torch/nn/modules/upsampling.py
+Docstring:     
+Applies a 2D nearest neighbor upsampling to an input signal composed of several input channels.
+
+To specify the scale, it takes either the :attr:`size` or the :attr:`scale_factor`
+as it's constructor argument.
+
+When :attr:`size` is given, it is the output size of the image `(h, w)`.
+
+Args:
+    size (int or Tuple[int, int], optional): output spatial sizes
+    scale_factor (float or Tuple[float, float], optional): multiplier for
+        spatial size.
+
+.. warning::
+    This class is deprecated in favor of :func:`~nn.functional.interpolate`.
+
+Shape:
+    - Input: :math:`(N, C, H_{in}, W_{in})`
+    - Output: :math:`(N, C, H_{out}, W_{out})` where
+
+.. math::
+      H_{out} = \left\lfloor H_{in} \times \text{scale\_factor} \right\rfloor
+
+.. math::
+      W_{out} = \left\lfloor W_{in} \times \text{scale\_factor} \right\rfloor
+
+Examples::
+
+    &gt;&gt;&gt; input = torch.arange(1, 5, dtype=torch.float32).view(1, 1, 2, 2)
+    &gt;&gt;&gt; input
+    tensor([[[[1., 2.],
+              [3., 4.]]]])
+
+    &gt;&gt;&gt; m = nn.UpsamplingNearest2d(scale_factor=2)
+    &gt;&gt;&gt; m(input)
+    tensor([[[[1., 1., 2., 2.],
+              [1., 1., 2., 2.],
+              [3., 3., 4., 4.],
+              [3., 3., 4., 4.]]]])
+Init docstring: Initialize internal Module state, shared by both nn.Module and ScriptModule.</code></pre>
+</div>
+</div>
+<div id="cell-57" class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>upsample(t), upsample(t).shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(tensor([[[[1., 1., 2., 2., 3., 3.],
+           [1., 1., 2., 2., 3., 3.],
+           [4., 4., 5., 5., 6., 6.],
+           [4., 4., 5., 5., 6., 6.]]]]),
+ torch.Size([1, 1, 4, 6]))</code></pre>
+</div>
+</div>
+<p><code>nn.UpsamplingNearest2d</code> increases the spatial dimensions of a 2D input tensor through nearest neighbor interpolation. In other words, it duplicates the nearest pixel values with the <code>scale_factor</code> or <code>size</code> parameter.</p>
+<div id="cell-59" class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>nn.UpsamplingNearest2d(scale_factor<span class="op">=</span><span class="dv">2</span>)(t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>tensor([[[[1., 1., 2., 2., 3., 3.],
+          [1., 1., 2., 2., 3., 3.],
+          [4., 4., 5., 5., 6., 6.],
+          [4., 4., 5., 5., 6., 6.]]]])</code></pre>
+</div>
+</div>
+<p>The convolutoin process can be also be used as a compression method, since the shape of an image gets reduced. Therefore, the opposite can uncompress. In this way, an encoder or decoder of sorts can be created.</p>
+<div id="cell-61" class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deconv(ni, nf, ks<span class="op">=</span><span class="dv">3</span>, act<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  layers <span class="op">=</span> [nn.UpsamplingNearest2d(scale_factor<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>            nn.Conv2d(ni, nf, stride<span class="op">=</span><span class="dv">1</span>, kernel_size<span class="op">=</span>ks, padding<span class="op">=</span>ks<span class="op">//</span><span class="dv">2</span>)]</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> act: layers.append(nn.ReLU())</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> nn.Sequential(<span class="op">*</span>layers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, a decoder has been implemented by increasing spatial dimensions, then applying a convolution to refine the upsampled dimensions.</p>
+<div id="cell-63" class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> tensor([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>],</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>           [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>],</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>           [<span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>],</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>           [<span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>]])[<span class="va">None</span>,<span class="va">None</span>,...].<span class="bu">float</span>()<span class="op">;</span> t</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>tensor([[[[ 1.,  2.,  3.,  4.],
+          [ 5.,  6.,  7.,  8.],
+          [ 9., 10., 11., 12.],
+          [13., 14., 15., 16.]]]])</code></pre>
+</div>
+</div>
+<hr>
+<section id="eval" class="level3">
+<h3 class="anchored" data-anchor-id="eval">eval</h3>
+<blockquote class="blockquote">
+<pre><code> eval (model, loss_func, valid_dl, epoch=0)</code></pre>
+</blockquote>
+<div id="cell-65" class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit(epochs, model, loss_func, opt, train_dl, valid_dl):</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>    model.train()</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> xb,_ <span class="kw">in</span> train_dl:</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>      loss <span class="op">=</span> loss_func(model(xb), xb)</span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>      loss.backward()</span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>      opt.step()</span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>      opt.zero_grad()</span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">eval</span>(model, loss_func, valid_dl, epoch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-66" class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>?nn.ZeroPad2d</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Init signature: nn.ZeroPad2d(padding: Union[int, Tuple[int, int, int, int]]) -&gt; None
+Docstring:     
+Pads the input tensor boundaries with zero.
+
+For `N`-dimensional padding, use :func:`torch.nn.functional.pad()`.
+
+Args:
+    padding (int, tuple): the size of the padding. If is `int`, uses the same
+        padding in all boundaries. If a 4-`tuple`, uses (:math:`\text{padding\_left}`,
+        :math:`\text{padding\_right}`, :math:`\text{padding\_top}`, :math:`\text{padding\_bottom}`)
+
+Shape:
+    - Input: :math:`(N, C, H_{in}, W_{in})` or :math:`(C, H_{in}, W_{in})`.
+    - Output: :math:`(N, C, H_{out}, W_{out})` or :math:`(C, H_{out}, W_{out})`, where
+
+      :math:`H_{out} = H_{in} + \text{padding\_top} + \text{padding\_bottom}`
+
+      :math:`W_{out} = W_{in} + \text{padding\_left} + \text{padding\_right}`
+
+Examples::
+
+    &gt;&gt;&gt; # xdoctest: +IGNORE_WANT("non-deterministic")
+    &gt;&gt;&gt; m = nn.ZeroPad2d(2)
+    &gt;&gt;&gt; input = torch.randn(1, 1, 3, 3)
+    &gt;&gt;&gt; input
+    tensor([[[[-0.1678, -0.4418,  1.9466],
+              [ 0.9604, -0.4219, -0.5241],
+              [-0.9162, -0.5436, -0.6446]]]])
+    &gt;&gt;&gt; m(input)
+    tensor([[[[ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+              [ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+              [ 0.0000,  0.0000, -0.1678, -0.4418,  1.9466,  0.0000,  0.0000],
+              [ 0.0000,  0.0000,  0.9604, -0.4219, -0.5241,  0.0000,  0.0000],
+              [ 0.0000,  0.0000, -0.9162, -0.5436, -0.6446,  0.0000,  0.0000],
+              [ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+              [ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000]]]])
+    &gt;&gt;&gt; # using different paddings for different sides
+    &gt;&gt;&gt; m = nn.ZeroPad2d((1, 1, 2, 0))
+    &gt;&gt;&gt; m(input)
+    tensor([[[[ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+              [ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+              [ 0.0000, -0.1678, -0.4418,  1.9466,  0.0000],
+              [ 0.0000,  0.9604, -0.4219, -0.5241,  0.0000],
+              [ 0.0000, -0.9162, -0.5436, -0.6446,  0.0000]]]])
+Init docstring: Initialize internal Module state, shared by both nn.Module and ScriptModule.
+File:           ~/miniforge3/envs/default/lib/python3.11/site-packages/torch/nn/modules/padding.py
+Type:           type
+Subclasses:     </code></pre>
+</div>
+</div>
+<p>Here, the input image will be compressed, before right after being uncompressed.</p>
+<div id="cell-68" class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>ae <span class="op">=</span> nn.Sequential( <span class="co"># 28x28</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  nn.ZeroPad2d(<span class="dv">2</span>),  <span class="co"># 32x32</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">1</span>,<span class="dv">2</span>),        <span class="co"># 16x16</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">2</span>,<span class="dv">4</span>),        <span class="co"># 8x8</span></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>  deconv(<span class="dv">4</span>,<span class="dv">2</span>),      <span class="co"># 16x16</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>  deconv(<span class="dv">2</span>,<span class="dv">1</span>, act<span class="op">=</span><span class="va">False</span>), <span class="co">#32x32</span></span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>  nn.ZeroPad2d(<span class="op">-</span><span class="dv">2</span>), <span class="co"># 28x28</span></span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>  nn.Sigmoid()</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>).to(def_device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-69" class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span>(ae, F.mse_loss, dlsv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.162</code></pre>
+</div>
+</div>
+<div id="cell-70" class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-71" class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-72" class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-62-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-73" class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">20</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.127
+1 0.126
+2 0.125
+3 0.125
+4 0.125
+5 0.124
+6 0.124
+7 0.124
+8 0.124
+9 0.124
+10 0.124
+11 0.124
+12 0.124
+13 0.124
+14 0.124
+15 0.124
+16 0.124
+17 0.124
+18 0.124
+19 0.124</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-63-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-74" class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.043
+1 0.030
+2 0.025
+3 0.022
+4 0.021</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-64-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-75" class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.021
+1 0.018
+2 0.017
+3 0.015
+4 0.016</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-65-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-76" class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.019
+1 0.020
+2 0.018
+3 0.019
+4 0.018</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-66-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-77" class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.022
+1 0.021
+2 0.021
+3 0.020
+4 0.020</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-67-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-78" class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">10</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.028
+1 0.023
+2 0.021
+3 0.020
+4 0.018
+5 0.018
+6 0.018
+7 0.018
+8 0.017
+9 0.018</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-68-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-79" class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>show_images(xb[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-69-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-80" class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>ae <span class="op">=</span> nn.Sequential( <span class="co"># 28x28</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>  nn.ZeroPad2d(<span class="dv">2</span>),  <span class="co"># 32x32</span></span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">1</span>,<span class="dv">2</span>),        <span class="co"># 16x16</span></span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">2</span>,<span class="dv">4</span>),        <span class="co"># 8x8</span></span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>  conv(<span class="dv">4</span>,<span class="dv">8</span>),        <span class="co"># 4x4</span></span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>  deconv(<span class="dv">8</span>,<span class="dv">4</span>),      <span class="co"># 8x8</span></span>
+<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>  deconv(<span class="dv">4</span>,<span class="dv">2</span>),      <span class="co"># 16x16</span></span>
+<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a>  deconv(<span class="dv">2</span>,<span class="dv">1</span>, act<span class="op">=</span><span class="va">False</span>), <span class="co">#32x32</span></span>
+<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a>  nn.ZeroPad2d(<span class="op">-</span><span class="dv">2</span>), <span class="co"># 28x28</span></span>
+<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a>  nn.Sigmoid()</span>
+<span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a>).to(def_device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-81" class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">10</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.124
+1 0.124
+2 0.124
+3 0.124
+4 0.124
+5 0.124
+6 0.124
+7 0.124
+8 0.124
+9 0.124</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-71-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-82" class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.124
+1 0.124
+2 0.124
+3 0.124
+4 0.124</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-72-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-83" class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> optim.SGD(ae.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>fit(<span class="dv">5</span>, ae, F.mse_loss, opt, dlst, dlsv)</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> ae(xb)</span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>show_images(p[:<span class="dv">16</span>].data.cpu(), imsize<span class="op">=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 0.124
+1 0.124
+2 0.124
+3 0.124
+4 0.124</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08_autoencoder_files/figure-html/cell-73-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/ForBo7\.github\.io\/xiaoai");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ForBo7/xiaoai/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
