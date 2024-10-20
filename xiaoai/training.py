@@ -26,12 +26,10 @@ def fit(epochs, model, loss_func, opt, trn_dl, vld_dl):
   for epoch in range(epochs):
     model.train()
     for xb, yb in trn_dl:
-      preds = model(xb)
-      loss = loss_func(preds, yb)
+      loss = loss_func(model(xb), yb)
       loss.backward()
       opt.step()
       opt.zero_grad()
-      report(loss, preds, yb)
     
     model.eval()
     with torch.no_grad():

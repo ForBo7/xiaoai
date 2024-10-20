@@ -18,6 +18,9 @@ def inplace(f):
 # %% ../nbs/00_core.ipynb 49
 from operator import itemgetter
 
+# %% ../nbs/00_core.ipynb 56
+from torch.utils.data import default_collate
+
 # %% ../nbs/00_core.ipynb 62
 def collate_dict(ds):
   get = itemgetter(*ds.features)
