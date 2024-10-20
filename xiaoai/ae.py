@@ -5,7 +5,7 @@
 # %% auto 0
 __all__ = ['eval']
 
-# %% ../nbs/08_autoencoder.ipynb 63
+# %% ../nbs/08_autoencoder.ipynb 64
 import torch
 def eval(model, loss_func, valid_dl, epoch=0):
   model.eval()
